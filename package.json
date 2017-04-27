@@ -1,0 +1,27 @@
+{
+  "name": "Magic-Mirror-Module-SydTrain-Status",
+  "version": "1.0.0",
+  "description": "Grab Current SydTrain Service Status",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WIleyAU/MMM-SydTrain-Status"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "train",
+    "status",
+    "module"
+  ],
+  "author": "Scott Kemble",
+  "contributors": "https://github.com/WIleyAU/MMM-SydTrain-Status/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WIleyAU/MMM-SydTrain-Status/issues"
+  },
+  "homepage": "https://github.com/WIleyAU/MMM-SydTrain-Status#readme",
+  "dependencies": {
+    "request": "latest",
+    "gtfs-realtime-bindings": "latest"
+    }
+}
