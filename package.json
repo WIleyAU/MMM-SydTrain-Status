@@ -22,6 +22,7 @@
   "homepage": "https://github.com/WIleyAU/MMM-SydTrain-Status#readme",
   "dependencies": {
     "request": "latest",
-    "gtfs-realtime-bindings": "latest"
+	"moment": "latest",
+	"querystring": "latest"
     }
 }
