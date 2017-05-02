@@ -1,5 +1,5 @@
 /* Magic Mirror
- * Module: MMM-SydTran-Stats
+ * Module: MMM-SydTran-Status
  *
  * By Scott Kemble
  * Apache 2.0 Licensed.
