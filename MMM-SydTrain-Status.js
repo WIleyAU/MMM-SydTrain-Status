@@ -102,6 +102,9 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
         this.updateDom(this.config.animationSpeed);
+        Log.log("MMM-SydTrain-Status this.depStopID: ", this.depStopID);
+        Log.log("MMM-SydTrain-Status this.arrStopID: ", this.arrStopID);
+        Log.log("MMM-SydTrain-Status this.loaded: ", this.loaded);
     },
 
     gotTrainBoard: function (payload) {
