@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
     sendStopID: function (err, resParams) {
         var self = this;
         console.log("MMM-SydTrain-Status NodeHelper Notification Sending: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
-        self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
+        this.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
         console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
     },
 
