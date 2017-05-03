@@ -35,7 +35,7 @@ Module.register('MMM-SydTrain-Status', {
         this.currTrainLoc = {};
         this.schedTrainOutput = "";
         this.schedTrainHead = "";
-        this.boardTrainOutput = "";
+        this.boardTrainOutput = "Loading...";
         this.boardTrainHead = "";
         this.getStopIDs();
         //this.getTrains();
@@ -102,6 +102,107 @@ Module.register('MMM-SydTrain-Status', {
         this.updateDom(this.config.animationSpeed);
     },
 
+    getTrains: function () {
+
+        console.log("MMM-SydTrain-Status initiating getTrains function...");
+
+        //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
+        if (this.config.autoSwitch == "") {
+            this.autoS = false;
+        } else {
+            if ((moment().get("hour") < moment(this.config.autoSwitch, "HH:mm").get("hour"))) {
+                this.autoS = false;
+            } else {
+                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
+                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
+                        this.autoS = false;
+                    } else {
+                        this.autoS = true;
+                    };
+                } else {
+                    this.autoS = true;
+                };
+            };
+        };
+
+        getTBoard();
+        // needTSched(getTSched);
+
+        setInterval(function () {
+            this.getTBoard();
+        }, this.config.updateInterval);
+
+    },
+
+
+
+    getTBoard: function () {
+
+        console.log("MMM-SydTrain-Status initiating getTBoard function...");
+
+        if (this.loaded) {
+            if (this.autoS) {
+                var tParams = {
+                    "depID": this.arrStopID,
+                    "arrID": this.depStopID,
+                    "tOffset": this.timeOffset * -1,
+                    "apiKey": this.fullAPIKey
+                };
+            } else {
+                var tParams = {
+                    "depID": this.depStopID,
+                    "arrID": this.arrStopID,
+                    "tOffset": 0,
+                    "apiKey": this.fullAPIKey
+                };
+            };
+            console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
+            this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
+            console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
+        };
+    },
+
+    gotTrainBoard: function (payload) {
+
+        console.log("MMM-SydTrain-Status initialising gotTrainBoard function...");
+
+        if (this.autoS) {
+            var depStat = this.config.arrival;
+            var arrStat = this.config.departure;
+            this.baordTrainHead = this.config.departure + " - ARRIVALS";
+        } else {
+            var depStat = this.config.departure;
+            var arrStat = this.config.arrival;
+            this.baordTrainHead = this.config.departure + " - DEPARTURES";
+        };
+
+        var htmlText = "<tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
+        payload.depBoard.forEach(function (leg) {
+            var depTime = leg.dep;
+            var arrTime = leg.arr;
+            var dur = leg.dur;
+            if (this.autoS) {
+                var del = leg.arrDel;
+            } else {
+                var del = leg.depDel;
+            };
+            htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
+            var summary = "";
+            var summ = leg.summ;
+            for (i = 0; I < summ.length; i++) {
+                if (i < summ.length - 1) {
+                    summary = summary + summ[i] + "  -->  ";
+                } else {
+                    summary = summary + summ[i];
+                };
+            };
+            htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
+
+        });
+        this.BoardTrainOutput = htmlText;
+        this.updateDom(this.config.animationSpeed);
+    },
+
     socketNotificationReceived: function (notification, payload) {
 
         console.log("MMM-SydTrain-Status socket notification received...");
@@ -109,8 +210,13 @@ Module.register('MMM-SydTrain-Status', {
         if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
             console.log("MMM-SydTrain-Status calling gotStopID function...");
-            this.testCount++;
             this.gotStopID(payload);
+            this.updateDom(this.config.animationSpeed);
+        };
+        if (notification === "MMM_SYDTRAINS_GOT_TRAINBOARD") {
+            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_TRAINBOARD");
+            console.log("MMM-SydTrain-Status calling gotTrainBoard function...");
+            gotTrainBoard(payload);
             this.updateDom(this.config.animationSpeed);
         };
 
@@ -135,14 +241,15 @@ Module.register('MMM-SydTrain-Status', {
         var header = document.createElement("header");
         var name = document.createElement("span");
 
-        
+        /*
         //added for testing purposes only
         if (this.loaded) {
             wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
         } else {
             wrapper.innerHTML = this.config.loadingText;
         };
-        
+        */
+        wrapper.innerHTML = this.BoardTrainOutput;
        
 
        
