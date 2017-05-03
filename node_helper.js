@@ -23,16 +23,14 @@ module.exports = NodeHelper.create({
         var self = this;
         console.log("MMM-SydTrain-Status NodeHelper Notification Sending: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
         console.log("MMM-SydTrainStats TypofVar: ", typeof (this.sendSocketNotification));
-        console.log("MMM-SydTrain-Status THIS: ", this);
-        console.log("MMM-SydTrain-Status SELF: ", self);
-        this.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
+        self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
         console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
     },
 
    
 
     getStopID: function (params, done) {
-        var self = this;
+        //var self = this;
         var stopName = params.name;
         var apiKey = params.apiKey;
         var results = [];

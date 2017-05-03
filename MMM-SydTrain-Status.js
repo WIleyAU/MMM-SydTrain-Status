@@ -23,7 +23,7 @@ Module.register('MMM-SydTrain-Status', {
     },
 
     start: function () {
-        self = this;
+        //self = this;
         this.url = '';
         this.fullAPIKey = "apikey " + this.config.apiKey;
         this.depStopID = "";
