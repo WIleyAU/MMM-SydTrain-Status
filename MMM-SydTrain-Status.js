@@ -45,7 +45,7 @@ Module.register('MMM-SydTrain-Status', {
 
     getStopIDs: function () {
 
-        console.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
+        Log.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
 
         if (this.depStopID == "") {
             var dParams = {
@@ -94,7 +94,8 @@ Module.register('MMM-SydTrain-Status', {
         setInterval(function () {
             self.updateDom(this.config.animationSpeed);
             console.log('update')
-        }, this.config.updateInterval);
+            //}, this.config.updateInterval);
+        }, 1000);
     },
 
 
