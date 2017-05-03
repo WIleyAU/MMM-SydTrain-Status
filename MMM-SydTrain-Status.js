@@ -223,7 +223,7 @@ Module.register('MMM-SydTrain-Status', {
         if (notification === "MMM_SYDTRAINS_GOT_TRAINBOARD") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_TRAINBOARD");
             console.log("MMM-SydTrain-Status calling gotTrainBoard function...");
-            gotTrainBoard(payload);
+            this.gotTrainBoard(payload);
             this.updateDom(this.config.animationSpeed);
         };
 
