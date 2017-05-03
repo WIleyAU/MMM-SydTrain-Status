@@ -109,7 +109,7 @@ Module.register('MMM-SydTrain-Status', {
         if (params.id == "arrival") {
             this.arrStopID = params.stopID;
         };
-        
+        this.testCount++;
         this.updateDom(this.config.animationSpeed);
     },
 
@@ -126,7 +126,7 @@ Module.register('MMM-SydTrain-Status', {
     getDom: function () {
 
         console.log("MMM-SydTrain-Status initiating getDom function...");
-
+        this.testCount++;
         var wrapper = document.createElement("div");
         var header = document.createElement("header");
         var name = document.createElement("span");
