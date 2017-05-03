@@ -171,7 +171,7 @@ Module.register('MMM-SydTrain-Status', {
 
     getTrains: function () {
 
-        console.log("MMM-SydTrain-Status initiating getTrains function...");
+        Log.log("MMM-SydTrain-Status initiating getTrains function...");
 
         //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
         if (this.config.autoSwitch == "") {
@@ -191,7 +191,7 @@ Module.register('MMM-SydTrain-Status', {
                 };
             };
         };
-
+        Log.log("MMM-SydTrain-Status Initiating getTBoard function...");
         this.getTBoard();
         // needTSched(getTSched);
 
