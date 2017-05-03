@@ -38,7 +38,7 @@ Module.register('MMM-SydTrain-Status', {
         this.boardTrainOutput = "Loading...";
         this.boardTrainHead = "";
         this.getStopIDs();
-        //this.getTrains();
+        this.getTrains();
     },
 
 
@@ -249,7 +249,7 @@ Module.register('MMM-SydTrain-Status', {
             wrapper.innerHTML = this.config.loadingText;
         };
         */
-        wrapper.innerHTML = this.BoardTrainOutput;
+        wrapper.innerHTML = this.boardTrainOutput;
        
 
        
