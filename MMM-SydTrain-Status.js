@@ -125,7 +125,7 @@ Module.register('MMM-SydTrain-Status', {
             var summ = leg.summ;
             for (i = 0; i < summ.length; i++) {
                 if (i < summ.length - 1) {
-                    summary = summary + summ[i] + "  -->  ";
+                    summary = summary + summ[i] + "  --  ";
                 } else {
                     summary = summary + summ[i];
                 };
