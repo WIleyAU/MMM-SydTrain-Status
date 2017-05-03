@@ -43,15 +43,12 @@ Module.register('MMM-SydTrain-Status', {
 
     getStopIDs: function () {
 
-        Log.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
-
         if (this.depStopID == "") {
             var dParams = {
                 "id": "departure",
                 "name": this.config.departure,
                 "apiKey": this.fullAPIKey
             };
-            console.log("MMM-SydTrain-Status sending DEPARTURE notification: MMM_SYDTRAINS_GET_STOP_ID");
             this.sendSocketNotification("MMM_SYDTRAINS_GET_STOP_ID", dParams);
         };
         if (this.arrStopID == "") {
@@ -60,7 +57,6 @@ Module.register('MMM-SydTrain-Status', {
                 "name": this.config.arrival,
                 "apiKey": this.fullAPIKey
             };
-            console.log("MMM-SydTrain-Status sending ARRIVAL notification: MMM_SYDTRAINS_GET_STOP_ID");
             this.sendSocketNotification("MMM_SYDTRAINS_GET_STOP_ID", aParams);
         };
     },
@@ -71,11 +67,6 @@ Module.register('MMM-SydTrain-Status', {
 
 
     gotStopID: function(params) {
-
-        console.log("MMM-SydTrain-Status initiating gotStopID function...");
-        Log.log("MMM-SydTrain_Status Params.id: ", params.id);
-        Log.log("MMM-SydTrain-Status Params.stopID: ",params.stopID);
-        Log.log("MMM-SydTrain-Status Params: ",params);
         if (params.id == "departure") {
             this.depStopID = params.stopID;
             if (this.arrStopID != "") {
@@ -89,10 +80,6 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
         this.updateDom(this.config.animationSpeed);
-        Log.log("MMM-SydTrain-Status this.depStopID: ", this.depStopID);
-        Log.log("MMM-SydTrain-Status this.arrStopID: ", this.arrStopID);
-        Log.log("MMM-SydTrain-Status this.loaded: ", this.loaded);
-        Log.log("MMM-SydTrain-Status invoking getTrains()");
         this.getTrains();
     },
 
@@ -134,7 +121,6 @@ Module.register('MMM-SydTrain-Status', {
         });
         htmlText = htmlText + '</table>';
         this.boardTrainOutput = htmlText;
-        Log.log("MMM-SydTrain-Status boardTrainOutput: ", this.boardTrainOutput);
         self.updateDom(this.config.animationSpeed);
 
         setInterval(function () {
@@ -147,7 +133,7 @@ Module.register('MMM-SydTrain-Status', {
     getTrains: function () {
 
         Log.log("MMM-SydTrain-Status initiating getTrains function...");
-
+        // TRAIN DEPARTURE BOARD FUNCTION
         //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
         if (this.config.autoSwitch == "") {
             this.autoS = false;
@@ -168,10 +154,6 @@ Module.register('MMM-SydTrain-Status', {
         };
 
 
-            console.log("MMM-SydTrain-Status initiating getTBoard function...");
-            Log.log("this.loaded: ", this.loaded);
-            Log.log("DepID: " + this.depStopID + " - ArrID: " + this.arrStopID);
-
             if (this.loaded) {
                 if (this.autoS) {
                     var tParams = {
@@ -188,12 +170,10 @@ Module.register('MMM-SydTrain-Status', {
                         "apiKey": this.fullAPIKey
                     };
                 };
-                console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
                 this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
-                console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
             };
 
-
+        // TRAIN SCHEDULE FUNCTION
 
     },
 
@@ -209,13 +189,11 @@ Module.register('MMM-SydTrain-Status', {
 
         if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
-            console.log("MMM-SydTrain-Status calling gotStopID function...");
             this.gotStopID(payload);
             this.updateDom(this.config.animationSpeed);
         };
         if (notification === "MMM_SYDTRAINS_GOT_TRAINBOARD") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_TRAINBOARD");
-            console.log("MMM-SydTrain-Status calling gotTrainBoard function...");
             this.gotTrainBoard(payload);
             this.updateDom(this.config.animationSpeed);
         };
@@ -236,20 +214,12 @@ Module.register('MMM-SydTrain-Status', {
 
     getDom: function () {
 
-        console.log("MMM-SydTrain-Status initiating getDom function...");
         var wrapper = document.createElement("div");
         var header = document.createElement("header");
         var name = document.createElement("span");
 
-        /*
-        //added for testing purposes only
-        if (this.loaded) {
-            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
-        } else {
-            wrapper.innerHTML = this.config.loadingText;
-        };
-        */
-        wrapper.innerHTML = this.boardTrainOutput;
+        wrapper.innerhtml = this.boardTrainHead;
+        wrapper.innerHTML += this.boardTrainOutput;
        
 
        
