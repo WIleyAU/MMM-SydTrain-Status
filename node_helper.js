@@ -79,6 +79,7 @@ module.exports = NodeHelper.create({
                     logItems("NOT A VALID STATION NAME")
                 } else {
                     logItems(null, results[0]);
+                    console.log("STOP ID RESULTS: ", results[0]);
                 };
 
             }
