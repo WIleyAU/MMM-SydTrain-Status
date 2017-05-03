@@ -125,7 +125,7 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
 
-        getTBoard();
+        this.getTBoard();
         // needTSched(getTSched);
 
         setInterval(function () {
