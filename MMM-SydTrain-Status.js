@@ -75,9 +75,7 @@ Module.register('MMM-SydTrain-Status', {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
             console.log("MMM-SydTrain-Status calling gotStopID function...");
             gotStopID(payload);
-            if (!this.loaded) {
-                this.updateDom(this.config.animationSpeed);
-            }
+            this.updateDom(this.config.animationSpeed);
         };
        
         if (notification === "MMM_SYDTRAINS_ERROR") {
@@ -134,6 +132,7 @@ Module.register('MMM-SydTrain-Status', {
         //added for testing purposes only
         if (this.arrStopID != "" && this.depStopID != "") {
             this.loaded = true;
+            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
         };
 
         if (!this.loaded) {
@@ -141,9 +140,6 @@ Module.register('MMM-SydTrain-Status', {
             return wrapper;
         }
 
-        if (this.loaded) {
-            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
-        };
        
 
         //name.innerHTML = "" + this.url;
