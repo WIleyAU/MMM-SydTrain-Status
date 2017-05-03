@@ -75,18 +75,27 @@ module.exports = NodeHelper.create({
                     });
                 });
 
-                if (results.length != 1) {
-                    logItems("NOT A VALID STATION NAME")
-                } else {
-                    logItems(null, results[0]);
-                    console.log("STOP ID RESULTS: ", results[0]);
-                };
 
+
+              
+                if (results.length != 1) {
+                    var resParams = {
+                        "id": params.id,
+                        "stopID": "NOT A VALID STOP NAME"
+                    };
+                } else {
+                    var resParams = {
+                        "id": params.id,
+                        "stopID": results[0]
+                    };
+                };
+                self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
             }
             else {
                 console.log(" Error: " + response.statusCode);
             }
         });
+
 
         function logItems(err, pItems) {
             var resParams = {
