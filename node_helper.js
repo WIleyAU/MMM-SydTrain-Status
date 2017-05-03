@@ -21,29 +21,32 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function (notification, payload) {
         if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
             this.getStopID(payload, sendStopID);
+            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
         };
         if (notification === 'MMM_SYDTRAINS_GET_TRAINBOARD') {
             this.getTrainBoard(payload, sendTrainBoard);
+            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
         };
         if (notification === 'MMM_SYDTRAINS_GET_TRAINSCHEDULE') {
             this.getTrainSchedule(payload, sendTrainSchedule);
+            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
         };
     },
 
 
     sendStopID: function (err, resParams) {
         this.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
-        console.log("resParams: ", resParams);
+        console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
     },
 
     sendTrainBoard: function (err, resParams) {
         this.sendSocketNotification("MMM_SYDTRAINS_GOT_TRAINBOARD", resParams);
-        console.log("resParams Callback Test: ", resParams);
+        console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_TRAINBOARD: ", resParams);
     },
 
     sendTrainSchedule: function(err, resParams) {
         this.sendSocketNotification("MMM_SYDTRAINS_GOT_TRAINSCHEDULE", resParams);
-        console.log("resParams Callback Test: ", resParams);
+        console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_TRAINSCHEDULE: ", resParams);
     },
 
     getStopID: function (params, done) {
@@ -61,6 +64,8 @@ module.exports = NodeHelper.create({
         var baseURL = "https://api.transport.nsw.gov.au/v1/tp/stop_finder?";
         var finURL = baseURL + querystring.stringify(qOptions);
 
+        console.log("MMM-SydTrain-Status Initiating getStopID Function...");
+
         var requestSettings = {
             method: "GET",
             url: finURL,
@@ -72,6 +77,9 @@ module.exports = NodeHelper.create({
         };
 
         request(requestSettings, function (error, response, body) {
+
+            console.log("MMM-SydTrain-Status getStopID Request Response: ", response.statusCode);
+
             if (!error && response.statusCode == 200) {
                 var items = JSON.parse(body);
 
@@ -108,6 +116,9 @@ module.exports = NodeHelper.create({
     },
 
     getTrainBoard: function (tParams, done) {
+
+        console.log("MMM-SydTrain-Status Initiating getTrainBoard Function...");
+
         var arrID = tParams.depID;
         var depID = tParams.arrID;
         var depMacr = "dep";
@@ -145,6 +156,9 @@ module.exports = NodeHelper.create({
         };
 
         request(requestSettings, function (error, response, body) {
+
+            console.log("MMM-SydTrain-Status getTrainBoard Request response: ", response.statusCode);
+
             if (!error && response.statusCode == 200) {
 
                 var items = JSON.parse(body);
@@ -240,6 +254,8 @@ module.exports = NodeHelper.create({
     },
 
     getTrainSchedule: function (tParams, done) {
+
+        console.log("MMM-SydTrain-Status Initiating getTrainSchedule function...");
 
         if (moment().get("hour") < 12) {
             var trainTime = moment(tParams.mornTrain, "HH:mm").format("HHmm");
