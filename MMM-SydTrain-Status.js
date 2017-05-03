@@ -44,7 +44,7 @@ Module.register('MMM-SydTrain-Status', {
 
     getStopIDs: function () {
 
-        log.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
+        console.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
 
         if (this.depStopID == "") {
             var dParams = {
@@ -142,7 +142,7 @@ Module.register('MMM-SydTrain-Status', {
         }
 
         if (this.loaded) {
-            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " / ArrID:" + this.arrStopID;
+            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
         };
        
 
