@@ -172,6 +172,8 @@ Module.register('MMM-SydTrain-Status', {
         function getTBoard() {
 
             console.log("MMM-SydTrain-Status initiating getTBoard function...");
+            Log.log("this.loaded: ", this.loaded);
+            Log.log("DepID: " + this.depStopID + " - ArrID: " + this.arrStopID);
 
             if (this.loaded) {
                 if (this.autoS) {
@@ -197,7 +199,7 @@ Module.register('MMM-SydTrain-Status', {
 
 
 
-        Log.log("MMM-SydTrain-Status Initiating getTBoard function...");
+        Log.log("MMM-SydTrain-Status Invoking getTBoard function...");
         getTBoard();
         // needTSched(getTSched);
 
