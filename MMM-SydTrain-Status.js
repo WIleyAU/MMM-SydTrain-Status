@@ -90,11 +90,11 @@ Module.register('MMM-SydTrain-Status', {
         if (this.autoS) {
             var depStat = this.config.arrival;
             var arrStat = this.config.departure;
-            this.baordTrainHead = this.config.departure + " - ARRIVALS";
+            this.boardTrainHead = this.config.departure + " - ARRIVALS";
         } else {
             var depStat = this.config.departure;
             var arrStat = this.config.arrival;
-            this.baordTrainHead = this.config.departure + " - DEPARTURES";
+            this.boardTrainHead = this.config.departure + " - DEPARTURES";
         };
 
         var htmlText = "<table><tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
@@ -218,8 +218,13 @@ Module.register('MMM-SydTrain-Status', {
         var header = document.createElement("header");
         var name = document.createElement("span");
 
-        var innerText = this.boardTrainHead + this.boardTrainOutput;
-        wrapper.innerHTML = innerText;
+
+        var table = document.createElement("div");
+        table.innerHTML = this.boardTrainOutput;
+        header.innerHTML = this.boardTrainHead;
+
+        wrapper.appendChild(header);
+        wrapper.appendChild(table);
        
 
        
