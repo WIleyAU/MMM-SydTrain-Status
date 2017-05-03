@@ -202,7 +202,7 @@ Module.register('MMM-SydTrain-Status', {
         // needTSched(getTSched);
 
         setInterval(function () {
-            this.getTBoard();
+            getTBoard();
         }, this.config.updateInterval);
 
     },
