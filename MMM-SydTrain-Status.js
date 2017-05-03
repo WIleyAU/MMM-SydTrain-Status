@@ -135,7 +135,7 @@ Module.register('MMM-SydTrain-Status', {
             htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
             var summary = "";
             var summ = leg.summ;
-            for (i = 0; I < summ.length; i++) {
+            for (i = 0; i < summ.length; i++) {
                 if (i < summ.length - 1) {
                     summary = summary + summ[i] + "  -->  ";
                 } else {
