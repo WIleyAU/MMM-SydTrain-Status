@@ -22,14 +22,13 @@ module.exports = NodeHelper.create({
     sendStopID: function (err, resParams) {
         var self = this;
         console.log("MMM-SydTrain-Status NodeHelper Notification Sending: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
-        console.log("MMM-SydTrainStats TypofVar: ", typeof (this.sendSocketNotification));
         self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
         console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
     },
 
    
-
-    getStopID: function (params, done) {
+    getStopID: function (params) {
+        //getStopID: function (params, done) {
         var self = this;
         var stopName = params.name;
         var apiKey = params.apiKey;
@@ -94,10 +93,10 @@ module.exports = NodeHelper.create({
                 "stopID": pItems[0]
             };
 
-            console.log("MMM-SydTrain-Status sending socket notification: MMM-SydTrainStats_TEST_NOTIFICATION");
-            self.sendSocketNotification("MMM-SydTrainStats_TEST_NOTIFICATION", "TEST_NOTIFICATION");
-            console.log("MMM-SydTrain-Status socket notification sent: MMM-SydTrainStats_TEST_NOTIFICATION");
-            done(null, resParams);
+            console.log("MMM-SydTrain-Status NodeHelper Notification Sending: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
+            self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
+            console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
+            //done(null, resParams);
         };
     },
 
@@ -107,7 +106,8 @@ module.exports = NodeHelper.create({
         var self = this;
         if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
             console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
-            this.getStopID(payload, this.sendStopID);
+            //this.getStopID(payload, this.sendStopID);
+            this.getStopID(payload);
         };
 
     },
