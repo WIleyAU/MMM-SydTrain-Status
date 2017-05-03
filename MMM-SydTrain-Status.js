@@ -19,7 +19,7 @@ Module.register('MMM-SydTrain-Status', {
         mornTrain: "08:45",
         eveTrain: "17:06",
         timeOffset: 120,  //minutes
-        loadingText: "Loading..."
+        loadingText: "Loading SydTrain Status..."
     },
 
     start: function () {
@@ -34,7 +34,7 @@ Module.register('MMM-SydTrain-Status', {
         this.loaded = false;
         this.currTrainLoc = {};
         this.schedTrainOutput = "";
-        this.schedTrainHead = ""
+        this.schedTrainHead = "";
         this.boardTrainOutput = "";
         this.boardTrainHead = "";
         this.getStopIDs();
@@ -136,7 +136,7 @@ Module.register('MMM-SydTrain-Status', {
         var name = document.createElement("span");
 
         if (!this.loaded) {
-            wrapper.innerHTML = "Loading SydTrain Status...";
+            wrapper.innerHTML = this.config.loadingText;
             return wrapper;
         }
 
