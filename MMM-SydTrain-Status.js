@@ -86,7 +86,9 @@ Module.register('MMM-SydTrain-Status', {
     gotStopID: function(params) {
 
         console.log("MMM-SydTrain-Status initiating gotStopID function...");
-
+        Log.log("MMM-SydTrain_Status Params.id: ", params.id);
+        Log.log("MMM-SydTrain-Status Params.stopID: ",params.stopID);
+        Log.log("MMM-SydTrain-Status Params: ",params);
         if (params.id == "departure") {
             this.depStopID = params.stopID;
             if (this.arrStopID != "") {
