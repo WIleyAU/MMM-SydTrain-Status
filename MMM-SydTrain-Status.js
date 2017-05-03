@@ -110,7 +110,7 @@ Module.register('MMM-SydTrain-Status', {
             this.baordTrainHead = this.config.departure + " - DEPARTURES";
         };
 
-        var htmlText = "<tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
+        var htmlText = "<table><tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
         payload.depBoard.forEach(function (leg) {
             var depTime = leg.dep;
             var arrTime = leg.arr;
@@ -131,8 +131,8 @@ Module.register('MMM-SydTrain-Status', {
                 };
             };
             htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
-            Log.log("MMM-SydTrain-Status HTML: ", htmlText);
         });
+        htmlText = htmlText + '</table>';
         this.boardTrainOutput = htmlText;
         Log.log("MMM-SydTrain-Status boardTrainOutput: ", this.boardTrainOutput);
         self.updateDom(this.config.animationSpeed);
