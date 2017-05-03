@@ -74,8 +74,9 @@ Module.register('MMM-SydTrain-Status', {
 
         this.updateDom(this.config.animationSpeed);
         setInterval(function () {
-            self.updateDom(this.config.animationSpeed);
-            console.log('update')
+            this.updateDom(this.config.animationSpeed);
+            console.log('update');
+
             //}, this.config.updateInterval);
         }, 1000);
     },
@@ -143,10 +144,11 @@ Module.register('MMM-SydTrain-Status', {
                 };
             };
             htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
-
+            Log.log("MMM-SydTrain-Status HTML: ", htmlText);
         });
         this.BoardTrainOutput = htmlText;
         this.updateDom(this.config.animationSpeed);
+        this.scheduleUpdate();
     },
 
     
