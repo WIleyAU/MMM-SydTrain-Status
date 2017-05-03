@@ -110,6 +110,9 @@ Module.register('MMM-SydTrain-Status', {
             this.arrStopID = params.stopID;
         };
         //added for testing purposes only
+        if (this.arrStopID != "" && this.depStopID != "") {
+            this.loaded = true;
+        };
         this.updateDom(this.config.animationSpeed);
         scheduleUpdate();
     },
