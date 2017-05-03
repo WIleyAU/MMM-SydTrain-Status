@@ -220,7 +220,10 @@ Module.register('MMM-SydTrain-Status', {
 
 
         var table = document.createElement("div");
-        table.innerHTML = this.boardTrainOutput;
+        var tableHead = document.createElement("header");
+        //table.innerHTML = this.boardTrainOutput;
+        tableHead.innerHTML = this.boardTrainOutput;
+        table.appendChild(tableHead);
         header.innerHTML = this.boardTrainHead;
 
         wrapper.appendChild(header);
