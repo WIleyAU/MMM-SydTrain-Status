@@ -100,9 +100,13 @@ module.exports = NodeHelper.create({
     
     // Subclass socketNotificationReceived received.
     socketNotificationReceived: function (notification, payload) {
+        var self = this;
         if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
             console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
-            this.getStopID(payload, this.sendStopID);
+            //this.getStopID(payload, this.sendStopID);
+            console.log("MMM-SydTrain-Status sending socket notification: MMM-SydTrainStats_TEST_NOTIFICATION");
+            self.sendSocketNotification("MMM-SydTrainStats_TEST_NOTIFICATION", "TEST_NOTIFICATION");
+            console.log("MMM-SydTrain-Status socket notification sent: MMM-SydTrainStats_TEST_NOTIFICATION");
         };
 
     },
