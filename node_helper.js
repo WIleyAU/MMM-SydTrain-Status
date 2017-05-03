@@ -28,6 +28,7 @@ module.exports = NodeHelper.create({
     getStopID: function (params, done) {
         var stopName = params.name;
         var apiKey = params.apiKey;
+        var results = [];
         var qOptions = {
             "outputFormat": "rapidJSON",
             "type_sf": "stop",
