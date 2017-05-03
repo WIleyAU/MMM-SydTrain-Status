@@ -112,8 +112,8 @@ Module.register('MMM-SydTrain-Status', {
 
         var htmlText = "<table><tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
         payload.depBoard.forEach(function (leg) {
-            var depTime = leg.dep;
-            var arrTime = leg.arr;
+            var depTime = moment(leg.dep).format("HH:mm");
+            var arrTime = moment(leg.arr).format("HH:mm");
             var dur = leg.dur;
             if (this.autoS) {
                 var del = leg.arrDel;
