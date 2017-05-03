@@ -37,7 +37,6 @@ Module.register('MMM-SydTrain-Status', {
         this.schedTrainHead = "";
         this.boardTrainOutput = "";
         this.boardTrainHead = "";
-        this.testCount = 0;
         this.getStopIDs();
         //this.getTrains();
     },
@@ -90,11 +89,16 @@ Module.register('MMM-SydTrain-Status', {
 
         if (params.id == "departure") {
             this.depStopID = params.stopID;
+            if (this.arrStopID != "") {
+                this.loaded = true;
+            };
         };
         if (params.id == "arrival") {
             this.arrStopID = params.stopID;
+            if (this.depStopID != "") {
+                this.loaded = true;
+            };
         };
-        this.testCount++;
         this.updateDom(this.config.animationSpeed);
     },
 
@@ -127,21 +131,19 @@ Module.register('MMM-SydTrain-Status', {
     getDom: function () {
 
         console.log("MMM-SydTrain-Status initiating getDom function...");
-        this.testCount++;
         var wrapper = document.createElement("div");
         var header = document.createElement("header");
         var name = document.createElement("span");
 
-        /*
+        
         //added for testing purposes only
-        if (this.arrStopID != "" && this.depStopID != "") {
-            this.loaded = true;
+        if (this.loaded) {
             wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
         } else {
             wrapper.innerHTML = this.config.loadingText;
         };
-        */
-        wrapper.innerHTML = "testCount: " + this.testCount;
+        
+       
 
        
        
