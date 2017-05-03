@@ -218,8 +218,8 @@ Module.register('MMM-SydTrain-Status', {
         var header = document.createElement("header");
         var name = document.createElement("span");
 
-        wrapper.innerhtml = this.boardTrainHead;
-        wrapper.innerHTML += this.boardTrainOutput;
+        var innerText = this.boardTrainHead + this.boardTrainOutput;
+        wrapper.innerHTML = innerText;
        
 
        
