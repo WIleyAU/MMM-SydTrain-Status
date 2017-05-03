@@ -143,31 +143,7 @@ Module.register('MMM-SydTrain-Status', {
         this.updateDom(this.config.animationSpeed);
     },
 
-    getTBoard: function () {
-
-        console.log("MMM-SydTrain-Status initiating getTBoard function...");
-
-        if (this.loaded) {
-            if (this.autoS) {
-                var tParams = {
-                    "depID": this.arrStopID,
-                    "arrID": this.depStopID,
-                    "tOffset": this.timeOffset * -1,
-                    "apiKey": this.fullAPIKey
-                };
-            } else {
-                var tParams = {
-                    "depID": this.depStopID,
-                    "arrID": this.arrStopID,
-                    "tOffset": 0,
-                    "apiKey": this.fullAPIKey
-                };
-            };
-            console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
-            this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
-            console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
-        };
-    },
+    
 
     getTrains: function () {
 
@@ -191,8 +167,38 @@ Module.register('MMM-SydTrain-Status', {
                 };
             };
         };
+
+
+        function getTBoard() {
+
+            console.log("MMM-SydTrain-Status initiating getTBoard function...");
+
+            if (this.loaded) {
+                if (this.autoS) {
+                    var tParams = {
+                        "depID": this.arrStopID,
+                        "arrID": this.depStopID,
+                        "tOffset": this.timeOffset * -1,
+                        "apiKey": this.fullAPIKey
+                    };
+                } else {
+                    var tParams = {
+                        "depID": this.depStopID,
+                        "arrID": this.arrStopID,
+                        "tOffset": 0,
+                        "apiKey": this.fullAPIKey
+                    };
+                };
+                console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
+                this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
+                console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
+            };
+        };
+
+
+
         Log.log("MMM-SydTrain-Status Initiating getTBoard function...");
-        this.getTBoard();
+        getTBoard();
         // needTSched(getTSched);
 
         setInterval(function () {
