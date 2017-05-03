@@ -17,16 +17,7 @@ module.exports = NodeHelper.create({
         console.log('Starting node helper: ' + this.name);
     },
 
-    // Subclass socketNotificationReceived received.
-    socketNotificationReceived: function (notification, payload) {
-        if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
-            this.getStopID(payload, sendStopID);
-            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
-        };
-
-    },
-
-
+    
     sendStopID: function (err, resParams) {
         this.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
         console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
@@ -101,7 +92,14 @@ module.exports = NodeHelper.create({
     },
 
     
+    // Subclass socketNotificationReceived received.
+    socketNotificationReceived: function (notification, payload) {
+        if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
+            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
+            this.getStopID(payload, sendStopID);
+        };
 
+    },
 
 
 });
