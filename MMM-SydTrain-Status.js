@@ -133,7 +133,8 @@ Module.register('MMM-SydTrain-Status', {
             htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
             Log.log("MMM-SydTrain-Status HTML: ", htmlText);
         });
-        this.BoardTrainOutput = htmlText;
+        this.boardTrainOutput = htmlText;
+        Log.log("MMM-SydTrain-Status boardTrainOutput: ", this.boardTrainOutput);
         self.updateDom(this.config.animationSpeed);
 
         setInterval(function () {
