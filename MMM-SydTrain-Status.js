@@ -102,66 +102,6 @@ Module.register('MMM-SydTrain-Status', {
         this.updateDom(this.config.animationSpeed);
     },
 
-    getTrains: function () {
-
-        console.log("MMM-SydTrain-Status initiating getTrains function...");
-
-        //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
-        if (this.config.autoSwitch == "") {
-            this.autoS = false;
-        } else {
-            if ((moment().get("hour") < moment(this.config.autoSwitch, "HH:mm").get("hour"))) {
-                this.autoS = false;
-            } else {
-                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
-                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
-                        this.autoS = false;
-                    } else {
-                        this.autoS = true;
-                    };
-                } else {
-                    this.autoS = true;
-                };
-            };
-        };
-
-        this.getTBoard();
-        // needTSched(getTSched);
-
-        setInterval(function () {
-            this.getTBoard();
-        }, this.config.updateInterval);
-
-    },
-
-
-
-    getTBoard: function () {
-
-        console.log("MMM-SydTrain-Status initiating getTBoard function...");
-
-        if (this.loaded) {
-            if (this.autoS) {
-                var tParams = {
-                    "depID": this.arrStopID,
-                    "arrID": this.depStopID,
-                    "tOffset": this.timeOffset * -1,
-                    "apiKey": this.fullAPIKey
-                };
-            } else {
-                var tParams = {
-                    "depID": this.depStopID,
-                    "arrID": this.arrStopID,
-                    "tOffset": 0,
-                    "apiKey": this.fullAPIKey
-                };
-            };
-            console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
-            this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
-            console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
-        };
-    },
-
     gotTrainBoard: function (payload) {
 
         console.log("MMM-SydTrain-Status initialising gotTrainBoard function...");
@@ -202,6 +142,70 @@ Module.register('MMM-SydTrain-Status', {
         this.BoardTrainOutput = htmlText;
         this.updateDom(this.config.animationSpeed);
     },
+
+    getTBoard: function () {
+
+        console.log("MMM-SydTrain-Status initiating getTBoard function...");
+
+        if (this.loaded) {
+            if (this.autoS) {
+                var tParams = {
+                    "depID": this.arrStopID,
+                    "arrID": this.depStopID,
+                    "tOffset": this.timeOffset * -1,
+                    "apiKey": this.fullAPIKey
+                };
+            } else {
+                var tParams = {
+                    "depID": this.depStopID,
+                    "arrID": this.arrStopID,
+                    "tOffset": 0,
+                    "apiKey": this.fullAPIKey
+                };
+            };
+            console.log("MMM-SydTrain-Status sending socket notification: MMM_SYDTRAINS_GET_TRAINBOARD");
+            this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
+            console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
+        };
+    },
+
+    getTrains: function () {
+
+        console.log("MMM-SydTrain-Status initiating getTrains function...");
+
+        //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
+        if (this.config.autoSwitch == "") {
+            this.autoS = false;
+        } else {
+            if ((moment().get("hour") < moment(this.config.autoSwitch, "HH:mm").get("hour"))) {
+                this.autoS = false;
+            } else {
+                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
+                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
+                        this.autoS = false;
+                    } else {
+                        this.autoS = true;
+                    };
+                } else {
+                    this.autoS = true;
+                };
+            };
+        };
+
+        this.getTBoard();
+        // needTSched(getTSched);
+
+        setInterval(function () {
+            this.getTBoard();
+        }, this.config.updateInterval);
+
+    },
+
+
+
+   
+
+    
 
     socketNotificationReceived: function (notification, payload) {
 
