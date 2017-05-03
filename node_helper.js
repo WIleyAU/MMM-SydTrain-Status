@@ -113,7 +113,7 @@ module.exports = NodeHelper.create({
     getTrainBoard: function (tParams) {
 
         console.log("MMM-SydTrain-Status Initiating getTrainBoard Function...");
-
+        var self = this;
         var arrID = tParams.depID;
         var depID = tParams.arrID;
         var depMacr = "dep";
@@ -243,10 +243,7 @@ module.exports = NodeHelper.create({
             }
         });
 
-        function logItems(err, pItems) {
-            var resParams = pItems;
-            done(null, resParams);
-        };
+
 
     },
 
