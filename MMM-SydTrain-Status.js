@@ -37,6 +37,7 @@ Module.register('MMM-SydTrain-Status', {
         this.schedTrainHead = "";
         this.boardTrainOutput = "";
         this.boardTrainHead = "";
+        this.testCount = 0;
         this.getStopIDs();
         //this.getTrains();
     },
@@ -74,6 +75,7 @@ Module.register('MMM-SydTrain-Status', {
         if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
             console.log("MMM-SydTrain-Status calling gotStopID function...");
+            this.testCount++;
             gotStopID(payload);
             this.updateDom(this.config.animationSpeed);
         };
@@ -129,6 +131,7 @@ Module.register('MMM-SydTrain-Status', {
         var header = document.createElement("header");
         var name = document.createElement("span");
 
+        /*
         //added for testing purposes only
         if (this.arrStopID != "" && this.depStopID != "") {
             this.loaded = true;
@@ -136,6 +139,8 @@ Module.register('MMM-SydTrain-Status', {
         } else {
             wrapper.innerHTML = this.config.loadingText;
         };
+        */
+        wrapper.innerHTML = "testCount: " + this.testCount;
 
        
        
