@@ -105,7 +105,7 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function (notification, payload) {
         var self = this;
         if (notification === 'MMM_SYDTRAINS_GET_STOP_ID') {
-            console.log("MMM-SydTrain-Status NodeHelper Notification Received: ", notification);
+            console.log("MMM-SydTrain-Status GET_STOP_ID Notification Received: ", payload);
             //this.getStopID(payload, this.sendStopID);
             this.getStopID(payload);
         };
