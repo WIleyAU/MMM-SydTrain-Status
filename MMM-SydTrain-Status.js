@@ -68,19 +68,6 @@ Module.register('MMM-SydTrain-Status', {
 
    
 
-    scheduleUpdate: function () {
-
-        console.log("MMM-SydTrain-Status initialising scheduleUpdate function...");
-
-        this.updateDom(this.config.animationSpeed);
-        setInterval(function () {
-            this.updateDom(this.config.animationSpeed);
-            console.log('update');
-
-            //}, this.config.updateInterval);
-        }, 1000);
-    },
-
 
 
     gotStopID: function(params) {
@@ -110,7 +97,7 @@ Module.register('MMM-SydTrain-Status', {
     },
 
     gotTrainBoard: function (payload) {
-
+        var self = this;
         console.log("MMM-SydTrain-Status initialising gotTrainBoard function...");
 
         if (this.autoS) {
@@ -147,8 +134,11 @@ Module.register('MMM-SydTrain-Status', {
             Log.log("MMM-SydTrain-Status HTML: ", htmlText);
         });
         this.BoardTrainOutput = htmlText;
-        this.updateDom(this.config.animationSpeed);
-        this.scheduleUpdate();
+        self.updateDom(this.config.animationSpeed);
+
+        setInterval(function () {
+            self.getTrains();
+        }, this.config.updateInterval);
     },
 
     
