@@ -68,23 +68,7 @@ Module.register('MMM-SydTrain-Status', {
     },
 
 
-    socketNotificationReceived: function(notification, payload) {
-
-        console.log("MMM-SydTrain-Status socket notification received...");
-
-        if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
-            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
-            console.log("MMM-SydTrain-Status calling gotStopID function...");
-            this.testCount++;
-            gotStopID(payload);
-            this.updateDom(this.config.animationSpeed);
-        };
-       
-        if (notification === "MMM_SYDTRAINS_ERROR") {
-            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_ERROR");
-            console.log(payload);
-        };
-    },
+   
 
     scheduleUpdate: function () {
 
@@ -114,7 +98,23 @@ Module.register('MMM-SydTrain-Status', {
         this.updateDom(this.config.animationSpeed);
     },
 
-   
+    socketNotificationReceived: function (notification, payload) {
+
+        console.log("MMM-SydTrain-Status socket notification received...");
+
+        if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
+            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
+            console.log("MMM-SydTrain-Status calling gotStopID function...");
+            this.testCount++;
+            this.gotStopID(payload);
+            this.updateDom(this.config.animationSpeed);
+        };
+
+        if (notification === "MMM_SYDTRAINS_ERROR") {
+            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_ERROR");
+            console.log(payload);
+        };
+    },
 
 
 
