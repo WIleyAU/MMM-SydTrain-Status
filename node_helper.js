@@ -234,7 +234,7 @@ module.exports = NodeHelper.create({
                     "depBoard": tripDetails
                 };
                 console.log("MMM-SydTrain-Status NodeHelper Sending Notification: MMM_SYDTRAINS_GOT_TRAINBOARD: ", results);
-                this.sendSocketNotification("MMM_SYDTRAINS_GOT_TRAINBOARD", results);
+                self.sendSocketNotification("MMM_SYDTRAINS_GOT_TRAINBOARD", results);
                 console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_TRAINBOARD: ", results);
 
             }
