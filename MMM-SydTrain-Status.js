@@ -133,13 +133,11 @@ Module.register('MMM-SydTrain-Status', {
         if (this.arrStopID != "" && this.depStopID != "") {
             this.loaded = true;
             wrapper.innerHTML = "" + "DepID:" + this.depStopID + " - ArrID:" + this.arrStopID;
+        } else {
+            wrapper.innerHTML = this.config.loadingText;
         };
 
-        if (!this.loaded) {
-            wrapper.innerHTML = this.config.loadingText;
-            return wrapper;
-        }
-
+       
        
 
         //name.innerHTML = "" + this.url;
