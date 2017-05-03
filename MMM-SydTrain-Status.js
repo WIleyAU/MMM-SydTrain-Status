@@ -38,7 +38,6 @@ Module.register('MMM-SydTrain-Status', {
         this.boardTrainOutput = "Loading...";
         this.boardTrainHead = "";
         this.getStopIDs();
-        this.getTrains();
     },
 
 
@@ -105,6 +104,8 @@ Module.register('MMM-SydTrain-Status', {
         Log.log("MMM-SydTrain-Status this.depStopID: ", this.depStopID);
         Log.log("MMM-SydTrain-Status this.arrStopID: ", this.arrStopID);
         Log.log("MMM-SydTrain-Status this.loaded: ", this.loaded);
+        Log.log("MMM-SydTrain-Status invoking getTrains()");
+        this.getTrains();
     },
 
     gotTrainBoard: function (payload) {
@@ -174,8 +175,6 @@ Module.register('MMM-SydTrain-Status', {
         };
 
 
-        function getTBoard() {
-
             console.log("MMM-SydTrain-Status initiating getTBoard function...");
             Log.log("this.loaded: ", this.loaded);
             Log.log("DepID: " + this.depStopID + " - ArrID: " + this.arrStopID);
@@ -200,17 +199,8 @@ Module.register('MMM-SydTrain-Status', {
                 this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
                 console.log("MMM-SydTrain-Status socket notification sent: MMM_SYDTRAINS_GET_TRAINBOARD");
             };
-        };
 
 
-
-        Log.log("MMM-SydTrain-Status Invoking getTBoard function...");
-        getTBoard();
-        // needTSched(getTSched);
-
-        setInterval(function () {
-            getTBoard();
-        }, this.config.updateInterval);
 
     },
 
