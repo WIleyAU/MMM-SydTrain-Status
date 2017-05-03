@@ -44,7 +44,7 @@ Module.register('MMM-SydTrain-Status', {
 
     getStopIDs: function () {
 
-        console.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
+        log.log("MMM-SydTrain-Status Initiating getSTopIDs function...");
 
         if (this.depStopID == "") {
             var dParams = {
@@ -109,12 +109,8 @@ Module.register('MMM-SydTrain-Status', {
         if (params.id == "arrival") {
             this.arrStopID = params.stopID;
         };
-        //added for testing purposes only
-        if (this.arrStopID != "" && this.depStopID != "") {
-            this.loaded = true;
-        };
+        
         this.updateDom(this.config.animationSpeed);
-        scheduleUpdate();
     },
 
    
@@ -135,20 +131,27 @@ Module.register('MMM-SydTrain-Status', {
         var header = document.createElement("header");
         var name = document.createElement("span");
 
+        //added for testing purposes only
+        if (this.arrStopID != "" && this.depStopID != "") {
+            this.loaded = true;
+        };
+
         if (!this.loaded) {
             wrapper.innerHTML = this.config.loadingText;
             return wrapper;
         }
 
-
+        if (this.loaded) {
+            wrapper.innerHTML = "" + "DepID:" + this.depStopID + " / ArrID:" + this.arrStopID;
+        };
        
 
         //name.innerHTML = "" + this.url;
-        name.innerHTML = "" + "DepID:" + this.depStopID + " / ArrID:" + this.arrStopID;
+        //name.innerHTML = "" + "DepID:" + this.depStopID + " / ArrID:" + this.arrStopID;
 
 
-        header.appendChild(name);
-        wrapper.appendChild(header);
+        //header.appendChild(name);
+        //wrapper.appendChild(header);
         //wrapper.appendChild(image);
 
         return wrapper;
