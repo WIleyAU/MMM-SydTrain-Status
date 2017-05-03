@@ -5,6 +5,7 @@
  * Apache 2.0 Licensed.
  */
 
+var NodeHelper = require('node_helper');
 var request = require("request");
 var querystring = require("querystring");
 var moment = require("moment");
@@ -19,7 +20,9 @@ module.exports = NodeHelper.create({
 
     
     sendStopID: function (err, resParams) {
-        this.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
+        var self = this;
+        console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
+        self.sendSocketNotification("MMM_SYDTRAINS_GOT_STOP_ID", resParams);
         console.log("MMM-SydTrain-Status NodeHelper Notification Sent: MMM_SYDTRAINS_GOT_STOP_ID: ", resParams);
     },
 
