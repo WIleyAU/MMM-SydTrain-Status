@@ -150,10 +150,10 @@ Module.register('MMM-SydTrain-Status', {
             headRow.appendChild(headElement5);
             boardTable.appendChild(headRow);
             for (bi = 0; bi < detLength; bi++) {
-                //var depTime = moment(boardDetails[bi].dep).format("HH:mm");
-                //var arrTime = moment(boardDetails[bi].arr).format("HH:mm");
-                var depTime = boardDetails[bi].dep;
-                var arrTime = boardDetails[bi].arr;
+                var depTime = moment(boardDetails[bi].dep, "DD-MM-YY HH:mm").format("HH:mm");
+                var arrTime = moment(boardDetails[bi].arr, "DD-MM-YY HH:mm").format("HH:mm");
+                //var depTime = boardDetails[bi].dep;
+                //var arrTime = boardDetails[bi].arr;
                 var dur = boardDetails[bi].dur;
                 if (this.autoS) {
                     var del = boardDetails[bi].arrDel;
