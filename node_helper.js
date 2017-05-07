@@ -71,7 +71,8 @@ module.exports = NodeHelper.create({
         } else {
             this.arrStopID = resParams.stopID;
         };
-        this.sendSocketNotification("SYDTRAINS_GOT_STOPID", this.depStopID);
+        console.log("SYDTRAINSTATS depStopID = " + this.depStopID);
+        console.log("SYDTRAINSTATS arrStopID = " + this.arrStopID);
     },
 
     getStopID: function(theConfig, direction) {
