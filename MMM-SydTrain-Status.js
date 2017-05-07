@@ -158,7 +158,8 @@ Module.register('MMM-SydTrain-Status', {
         self.updateDom(this.config.animationSpeed);
 
         setInterval(function () {
-            self.getTrains();
+            //self.getTrains();
+            self.updateDom(this.config.animationSpeed);
         }, this.config.updateInterval);
     },
 
