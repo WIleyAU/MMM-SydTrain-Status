@@ -58,7 +58,7 @@ module.exports = NodeHelper.create({
     },
 
     updateDepBoard: function(theConfig) {
-        this.updateAutoSwitch(theConfig);
+        //this.updateAutoSwitch(theConfig);
         console.log("MMM-SydTrain-Status Initiating getTrainBoard Function...");
         var self = this;
         if (this.autoS) {
