@@ -21,6 +21,8 @@ module.exports = NodeHelper.create({
         this.depStopID = "";
         this.arrStopID = "";
         this.autoS = false;
+        this.showMorn = false;
+        this.showEve = false;
     },
 
     
@@ -36,8 +38,8 @@ module.exports = NodeHelper.create({
             setTimeout(function() {self.getStopID(theConfig, "arr"); }, 1500);
 
             //DETERMINE LIVE TRAIN SCHEDULE
-            setTimeout(function() {self.updateCurrLocation(theConfig); }, 4000);
-            setInterval(function() {self.updateCurrLocation(theConfig); }, theConfig.refreshRateCurrLoc);
+            setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
+            setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
 
             //DETERMINE DEPARTUREBOARD UPDATES
             setTimeout(function() {self.updateDepBoard(theConfig); }, 5000);
@@ -55,6 +57,29 @@ module.exports = NodeHelper.create({
 
     updateIncidents: function(theConfig) {
 
+    },
+
+    updateShowCurrent: function(theConfig) {
+        console.log("MMM-SydTrain-Status initiating updateShowCurrent function...");
+
+        var now = new moment();
+        if ((now.get("hour") >= moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour"))) {
+            this.showMorn = true;
+            this.showEve = false;
+        } else {
+            this.showMorn = false;
+        };
+        if ((now.get("hour") >= moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"))) {
+            this.showEve = true;
+            this.showMorn = false;
+        } else {
+            this.showEve = false;
+        };
+        if (showMorn || showEve) {
+            console.log("MMM-SydTrain-Status calling updateCurrLocation function...");
+            this.updateCurrLocation(theConfig);
+        };
+        this.sendSocketNotification("SYDTRAIN_SCH_UPDATE",{"result":"No trains to display"});
     },
 
     updateAutoSwitch: function(theConfig) {

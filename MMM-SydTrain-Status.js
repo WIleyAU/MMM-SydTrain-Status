@@ -66,6 +66,7 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
         if (notification === "SYDTRAIN_SCH_UPDATE") {
+            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_SCH_UPDATE");
             this.currentLocation = payload;
             this.schLoaded = true;
             if (this.firstUpdateDOMFlag) {
@@ -206,8 +207,19 @@ Module.register('MMM-SydTrain-Status', {
 
 
         //SCH DOM FORMATTING
+        var scheduleWrapper = document.createElement("div");
+        var scheduleHeader = document.createElement("header");
+        scheduleHeader.className = "medium";
+        if (this.schLoaded) {
+            scheduleHeader.innerHTML = this.currentLocation.result;
+            scheduleWrapper.appendChild(scheduleHeader);
+        } else {
+            scheduleHeader.innerHTML = "Loading current train location...";
+            scheduleWrapper.appendChild(scheduleHeader);
+        };
 
 
+        wrapper.appendChild(scheduleWrapper);
         wrapper.appendChild(boardWrapper);
         return wrapper;
     }
