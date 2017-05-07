@@ -110,9 +110,9 @@ Module.register('MMM-SydTrain-Status', {
         var boardWrapper = document.createElement("div");
         if (this.depLoaded) {
             if (this.autoS) {
-                var header = this.departure + " - ARRIVALS (from " + this.arrival + ")";
+                var header = this.config.departure + " - ARRIVALS (from " + this.config.arrival + ")";
             } else {
-                var header = this.departure + " - DEPARTURES (to " + this.arrival + ")";
+                var header = this.config.departure + " - DEPARTURES (to " + this.config.arrival + ")";
             };
             var boardDetails = this.departureBoard.depBoard;
             if (boardDetails.length > 5) {
@@ -142,8 +142,10 @@ Module.register('MMM-SydTrain-Status', {
             headRow.appendChild(headElement);
             boardTable.appendChild(headRow);
             for (bi = 0; bi < detLength; bi++) {
-                var depTime = moment(boardDetails[bi].dep).format("HH:mm");
-                var arrTime = moment(boardDetails[bi].arr).format("HH:mm");
+                //var depTime = moment(boardDetails[bi].dep).format("HH:mm");
+                //var arrTime = moment(boardDetails[bi].arr).format("HH:mm");
+                var depTime = boardDetails[bi].dep;
+                var arrTime = boardDetails[bi].arr;
                 var dur = boardDetails[bi].dur;
                 if (this.autoS) {
                     var del = boardDetails[bi].arrDel;
