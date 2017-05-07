@@ -18,7 +18,6 @@ module.exports = NodeHelper.create({
         console.log('Starting node helper: ' + this.name);
         this.stopUpdates = false;
         this.errorCount = 0;
-        this.fullAPIKey = "apikey " + this.config.apiKey;
         this.depStopID = "";
         this.arrStopID = "";
         this.autoS = false;
@@ -33,7 +32,6 @@ module.exports = NodeHelper.create({
         if (notification === 'MMM-SydTrain-Status_CONFIG') {
             console.log("MMM-SydTrain-Status GET_STOP_ID Notification Received: ", theConfig);
             var self = this;
-            this.fullAPIKey = "apiKey " + theConfig.apiKey;
             this.getStopID(theConfig.departure);
             setTimeout(function() {self.getStopID(theConfig.arrival); }, 1500);
 
@@ -67,7 +65,13 @@ module.exports = NodeHelper.create({
 
     },
 
-    getStopIDs: function(stopName) {
+    gotStopID: function() {
+        this.sendSocketNotification("SYDTRAINS_GOT_STOPID", this.depStopID);
+    },
 
+    getStopID: function(stopName) {
+        this.depStopID = "123456";
+        var self = this;
+        setTimeout(function() {self.gotStopID(); }, 2000);
     },
 });
