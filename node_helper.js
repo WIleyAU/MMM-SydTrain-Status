@@ -32,8 +32,8 @@ module.exports = NodeHelper.create({
         if (notification === 'MMM-SydTrain-Status_CONFIG') {
             console.log("MMM-SydTrain-Status GET_STOP_ID Notification Received: ", theConfig);
             var self = this;
-            this.getStopID(theConfig.departure);
-            setTimeout(function() {self.getStopID(theConfig.arrival); }, 1500);
+            this.getStopID(theConfig, "dep");
+            setTimeout(function() {self.getStopID(theConfig, "arr"); }, 1500);
 
             //DETERMINE LIVE TRAIN SCHEDULE
             setTimeout(function() {self.updateCurrLocation(theConfig); }, 4000);
@@ -65,13 +65,85 @@ module.exports = NodeHelper.create({
 
     },
 
-    gotStopID: function() {
+    gotStopID: function(resParams) {
+        if (resParams.id == "dep") {
+            this.depStopID = resParams.stopID;
+        } else {
+            this.arrStopID = resParams.stopID;
+        };
         this.sendSocketNotification("SYDTRAINS_GOT_STOPID", this.depStopID);
     },
 
-    getStopID: function(stopName) {
-        this.depStopID = "123456";
+    getStopID: function(theConfig, direction) {
+        //getStopID: function (params, done) {
         var self = this;
-        setTimeout(function() {self.gotStopID(); }, 2000);
+        if (direction == "dep") {
+            var stopName = theConfig.departure;
+        } else {
+            var stopName = theConfig.arrival;
+        };
+        var apiKey = "apikey " + theConfig.apiKey;
+        var results = [];
+        var qOptions = {
+            "outputFormat": "rapidJSON",
+            "type_sf": "stop",
+            "name_sf": stopName,
+            "coordOutputFormat": "EPSG:4326",
+            "anyMaxSizeHitList": 10,
+            "tfNSWSF": "true",
+            "version": "10.2.1.15"
+        };
+        var baseURL = "https://api.transport.nsw.gov.au/v1/tp/stop_finder?";
+        var finURL = baseURL + querystring.stringify(qOptions);
+
+        console.log("MMM-SydTrain-Status Initiating getStopID Function...");
+
+        var requestSettings = {
+            method: "GET",
+            url: finURL,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": apiKey
+            },
+            encoding: null
+        };
+
+        request(requestSettings, function (error, response, body) {
+
+            console.log("MMM-SydTrain-Status getStopID Request Response: ", response.statusCode);
+
+            if (!error && response.statusCode == 200) {
+                var items = JSON.parse(body);
+
+                items.locations.forEach(function (items) {
+                    items.assignedStops.forEach(function (assStop) {
+                        if (assStop.hasOwnProperty("modes")) {
+                            var tempModes = assStop.modes;
+                            if (tempModes.indexOf(1) > -1) {
+                                results.push(items.id);
+                            };
+                        };
+                    });
+                });
+              
+                if (results.length != 1) {
+                    var resParams = {
+                        "id": params.id,
+                        "stopID": "NOT A VALID STOP NAME"
+                    };
+                } else {
+                    var resParams = {
+                        "id": direction,
+                        "stopID": results[0]
+                    };
+                };
+                self.gotStopID(resParams);
+            }
+            else {
+                console.log(" Error: " + response.statusCode);
+            }
+        });
+
     },
+
 });
