@@ -113,7 +113,7 @@ Module.register('MMM-SydTrain-Status', {
             if (summ.length > 5) {
                 var depLength = 5;
             } else {
-                var depLength = summ.length);
+                var depLength = summ.length;
             };
             for (i = 0; i < depLength; i++) {
                 if (i < summ.length - 1) {
