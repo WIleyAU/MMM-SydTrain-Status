@@ -37,6 +37,7 @@ Module.register('MMM-SydTrain-Status', {
         this.firstUpdateDOMFlag = false;
         this.errorMessage = null;
         this.departureBoard = {};
+        this.depLoaded = false;
         this.currentLocation = {};
         this.incidents = {};
         if (this.config.apiKey !== "") {
@@ -56,6 +57,7 @@ Module.register('MMM-SydTrain-Status', {
     socketNotificationReceived: function(notification, payload) {
         if (notification === "SYDTRAIN_DEPBOARD_UDPATE") {
             this.departureBoard = payload;
+            this.depLoaded = true;
             if (this.firstUpdateDOMFlag) {
                 this.updateDom();
             };
@@ -108,79 +110,84 @@ Module.register('MMM-SydTrain-Status', {
 
 
         //DEPBOARD DOM FORMATTING
-        if (this.departureBoard.autoS) {
-            var header = this.departure + " - ARRIVALS (from " + this.arrival + ")";
-        } else {
-            var header = this.departure + " - DEPARTURES (to " + this.arrival + ")";
-        };
-        var boardDetails = this.departureBoard.results.depBoard;
-        if (boardDetails.length > 5) {
-            var detLength = 5;
-        } else {
-            var detLength = boardDetails.length
-        };
-        var headRow = document.createElement("tr");
-        var headElement = document.createElement("th");
-        var boardTable = document.createElement("table");
         var boardWrapper = document.createElement("div");
-        var boardHeader = document.createElement("header");
-        boardHeader.className = "medium";
-        boardHeader.innerHTML = header;
-        boardWrapper.appendChild(boardHeader);
-
-        headElement.className = "small";
-        headElement.innerHTML = "DEP";
-        headRow.appendChild(headElement);
-        headElement.innerHTML = " -- ";
-        headRow.appendChild(headElement);
-        headElement.innerHTML = "ARR";
-        headRow.appendChild(headElement);
-        headElement.innerHTML = "(mins)";
-        headRow.appendChild(headElement);
-        headElement.innerHTML = "DELAY";
-        headRow.appendChild(headElement);
-        boardTable.appendChild(headRow);
-        for (bi = 0; bi < detLength; bi++) {
-            var depTime = moment(boardDetails[bi].dep).format("HH:mm");
-            var arrTime = moment(boardDetails[bi].arr).format("HH:mm");
-            var dur = boardDetails[bi].dur;
-            if (this.autoS) {
-                var del = boardDetails[bi].arrDel;
+        if (this.depLoaded) {
+            if (this.departureBoard.autoS) {
+                var header = this.departure + " - ARRIVALS (from " + this.arrival + ")";
             } else {
-                var del = boardDetails[bi].depDel;
+                var header = this.departure + " - DEPARTURES (to " + this.arrival + ")";
             };
-            var iRow = document.createElement("tr");
-            var iElement = document.createElement("td");
-            iElement.className = "xsmall";
-            iElement.innerHTML = depTime;
-            iRow.appendChild(iElement);
-            iElement.innerHTML = " -- ";
-            iRow.appendChild(iElement);
-            iElement.innerHTML = arrTime;
-            iRow.appendChild(iElement);
-            iElement.innerHTML = dur;
-            iRow.appendChild(iElement);
-            iElement.innerHTML = del;
-            iRow.appendChild(iElement);
-            boardTable.appendChild(iRow);
-            var summRow = document.createElement("tr");
-            var summElement = document.createElement("td");
-            summElement.className = "xsmall";
-            summElement.colSpan = "5";
-            var summary = "";
-            var summ = boardDetails[bi].summ;
-            for (si = 0; si < summ.length; si++) {
-                if (si < summ.length - 1) {
-                    summary = summary + summ[si] + "  --  ";
+            var boardDetails = this.departureBoard.results.depBoard;
+            if (boardDetails.length > 5) {
+                var detLength = 5;
+            } else {
+                var detLength = boardDetails.length
+            };
+            var headRow = document.createElement("tr");
+            var headElement = document.createElement("th");
+            var boardTable = document.createElement("table");
+
+            var boardHeader = document.createElement("header");
+            boardHeader.className = "medium";
+            boardHeader.innerHTML = header;
+            boardWrapper.appendChild(boardHeader);
+
+            headElement.className = "small";
+            headElement.innerHTML = "DEP";
+            headRow.appendChild(headElement);
+            headElement.innerHTML = " -- ";
+            headRow.appendChild(headElement);
+            headElement.innerHTML = "ARR";
+            headRow.appendChild(headElement);
+            headElement.innerHTML = "(mins)";
+            headRow.appendChild(headElement);
+            headElement.innerHTML = "DELAY";
+            headRow.appendChild(headElement);
+            boardTable.appendChild(headRow);
+            for (bi = 0; bi < detLength; bi++) {
+                var depTime = moment(boardDetails[bi].dep).format("HH:mm");
+                var arrTime = moment(boardDetails[bi].arr).format("HH:mm");
+                var dur = boardDetails[bi].dur;
+                if (this.autoS) {
+                    var del = boardDetails[bi].arrDel;
                 } else {
-                    summary = summary + summ[si];
+                    var del = boardDetails[bi].depDel;
                 };
+                var iRow = document.createElement("tr");
+                var iElement = document.createElement("td");
+                iElement.className = "xsmall";
+                iElement.innerHTML = depTime;
+                iRow.appendChild(iElement);
+                iElement.innerHTML = " -- ";
+                iRow.appendChild(iElement);
+                iElement.innerHTML = arrTime;
+                iRow.appendChild(iElement);
+                iElement.innerHTML = dur;
+                iRow.appendChild(iElement);
+                iElement.innerHTML = del;
+                iRow.appendChild(iElement);
+                boardTable.appendChild(iRow);
+                var summRow = document.createElement("tr");
+                var summElement = document.createElement("td");
+                summElement.className = "xsmall";
+                summElement.colSpan = "5";
+                var summary = "";
+                var summ = boardDetails[bi].summ;
+                for (si = 0; si < summ.length; si++) {
+                    if (si < summ.length - 1) {
+                        summary = summary + summ[si] + "  --  ";
+                    } else {
+                        summary = summary + summ[si];
+                    };
+                };
+                summElement.innerHTML = summary;
+                summRow.appendChild(summElement);
+                boardTable.appendChild(summRow);
             };
-            summElement.innerHTML = summary;
-            summRow.appendChild(summElement);
-            boardTable.appendChild(summRow);
+            boardWrapper.appendChild(boardTable);
+        } else {
+            boardWrapper.innerHTML = "Loading...";
         };
-        boardWrapper.appendChild(boardTable);
 
 
         //SCH DOM FORMATTING
