@@ -66,8 +66,8 @@ module.exports = NodeHelper.create({
             if ((moment().get("hour") < moment(theConfig.autoSwitch, "HH:mm").get("hour"))) {
                 this.autoS = false;
             } else {
-                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
-                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
+                if (moment().get("hour") == moment(theConfig.autoSwitch, "HH:mm").get("hour")) {
+                    if (moment().get("minute") <= moment(theConfig.autoSwitch, "HH:mm").get("minute")) {
                         this.autoS = false;
                     } else {
                         this.autoS = true;
