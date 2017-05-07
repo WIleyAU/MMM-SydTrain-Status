@@ -37,6 +37,7 @@ Module.register('MMM-SydTrain-Status', {
         this.schedTrainHead = "";
         this.boardTrainOutput = "Loading...";
         this.boardTrainHead = "";
+        this.boardCount = 0;
         this.getStopIDs();
     },
 
@@ -98,6 +99,7 @@ Module.register('MMM-SydTrain-Status', {
         };
 
         var htmlText = "<table><tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
+        /*
         payload.depBoard.forEach(function (leg) {
             var depTime = moment(leg.dep).format("HH:mm");
             var arrTime = moment(leg.arr).format("HH:mm");
@@ -110,12 +112,7 @@ Module.register('MMM-SydTrain-Status', {
             htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
             var summary = "";
             var summ = leg.summ;
-            if (summ.length > 5) {
-                var depLength = 5;
-            } else {
-                var depLength = summ.length;
-            };
-            for (i = 0; i < depLength; i++) {
+            for (i = 0; i < summ.length; i++) {
                 if (i < summ.length - 1) {
                     summary = summary + summ[i] + "  --  ";
                 } else {
@@ -124,6 +121,38 @@ Module.register('MMM-SydTrain-Status', {
             };
             htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
         });
+        */
+        if (payload.depBoard.length > 5) {
+            var depLength = 5;
+        } else {
+            var depLength = payload.depBoard.length;
+        };
+        for (di = 0; di < depLength; di++) {
+            var tempB = payload.depBoard[di];
+            var depTime = moment(tempB.dep).format("HH:mm");
+            var arrTime = moment(tempB.arr).format("HH:mm");
+            var dur = tempB.dur;
+            if (this.autoS) {
+                var del = tempB.arrDel;
+            } else {
+                var del = tempB.depDel;
+            };
+            htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
+            var summary = "";
+            var summ = tempB.summ;
+            for (i = 0; i < summ.length; i++) {
+                if (i < summ.length - 1) {
+                    summary = summary + summ[i] + "  --  ";
+                } else {
+                    summary = summary + summ[i];
+                };
+            };
+            htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
+        };
+
+
+
+
         htmlText = htmlText + '</table>';
         this.boardTrainOutput = htmlText;
         self.updateDom(this.config.animationSpeed);
@@ -175,7 +204,13 @@ Module.register('MMM-SydTrain-Status', {
                         "apiKey": this.fullAPIKey
                     };
                 };
-                this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
+                if (this.boardCount > 5) {
+                    this.boardCount = 0;
+                };
+                if (this.boardCount = 0) {
+                    this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
+                };
+                this.boardCount ++;
             };
 
         // TRAIN SCHEDULE FUNCTION
@@ -200,7 +235,7 @@ Module.register('MMM-SydTrain-Status', {
         if (notification === "MMM_SYDTRAINS_GOT_TRAINBOARD") {
             console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_TRAINBOARD");
             this.gotTrainBoard(payload);
-            this.updateDom(this.config.animationSpeed);
+            //this.updateDom(this.config.animationSpeed);
         };
 
         if (notification === "MMM_SYDTRAINS_ERROR") {
