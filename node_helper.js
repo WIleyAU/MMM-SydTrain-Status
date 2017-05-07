@@ -58,7 +58,7 @@ module.exports = NodeHelper.create({
     },
 
     updateAutoSwitch: function(theConfig) {
-        console.log("MMM_SYDTRAIN-STATUS starting updateAutoSwitch function"):
+        console.log("MMM_SYDTRAIN-STATUS starting updateAutoSwitch function");
         console.log("MMM-SYDTRAIN-STATUS theCOnfig.autoSwitch: " + theConfig.autoSwitch);
         if (theConfig.autoSwitch == "") {
             this.autoS = false;
