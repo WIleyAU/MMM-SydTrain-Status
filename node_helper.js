@@ -57,8 +57,30 @@ module.exports = NodeHelper.create({
 
     },
 
+    updateAutoSwitch: function(theConfig) {
+        console.log("MMM_SYDTRAIN-STATUS starting updateAutoSwitch function"):
+        console.log("MMM-SYDTRAIN-STATUS theCOnfig.autoSwitch: " + theConfig.autoSwitch);
+        if (theConfig.autoSwitch == "") {
+            this.autoS = false;
+        } else {
+            if ((moment().get("hour") < moment(theConfig.autoSwitch, "HH:mm").get("hour"))) {
+                this.autoS = false;
+            } else {
+                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
+                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
+                        this.autoS = false;
+                    } else {
+                        this.autoS = true;
+                    };
+                } else {
+                    this.autoS = true;
+                };
+            };
+        };
+    },
+
     updateDepBoard: function(theConfig) {
-        //this.updateAutoSwitch(theConfig);
+        this.updateAutoSwitch(theConfig);
         console.log("MMM-SydTrain-Status Initiating getTrainBoard Function...");
         var self = this;
         if (this.autoS) {
@@ -206,26 +228,6 @@ module.exports = NodeHelper.create({
 
     updateCurrLocation: function(theConfig) {
 
-    },
-
-    updateAutoSwitch: function(theConfig) {
-        if (theConfig.autoSwitch == "") {
-            this.autoS = false;
-        } else {
-            if ((moment().get("hour") < moment(theConfig.autoSwitch, "HH:mm").get("hour"))) {
-                this.autoS = false;
-            } else {
-                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
-                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
-                        this.autoS = false;
-                    } else {
-                        this.autoS = true;
-                    };
-                } else {
-                    this.autoS = true;
-                };
-            };
-        };
     },
 
     gotStopID: function(resParams) {

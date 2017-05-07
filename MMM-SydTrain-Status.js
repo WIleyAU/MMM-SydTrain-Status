@@ -129,7 +129,7 @@ Module.register('MMM-SydTrain-Status', {
             var boardTable = document.createElement("table");
 
             var boardHeader = document.createElement("header");
-            boardHeader.className = "medium";
+            boardHeader.className = "small";
             boardHeader.innerHTML = header;
             boardWrapper.appendChild(boardHeader);
 
