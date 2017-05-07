@@ -207,7 +207,7 @@ Module.register('MMM-SydTrain-Status', {
                 if (this.boardCount > 5) {
                     this.boardCount = 0;
                 };
-                if (this.boardCount = 0) {
+                if (this.boardCount == 0) {
                     this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
                 };
                 this.boardCount ++;
