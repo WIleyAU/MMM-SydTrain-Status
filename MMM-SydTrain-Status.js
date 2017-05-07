@@ -18,232 +18,76 @@ Module.register('MMM-SydTrain-Status', {
         autoSwitch: "14:30",
         mornTrain: "08:45",
         eveTrain: "17:06",
+        showIncidents: false,
+        refreshRateIncidents: 10*60*1000,
+        refreshRateDepBoard: 5*60*1000,
+        refreshRateCurrLoc: 20*1000,
         timeOffset: 120,  //minutes
         loadingText: "Loading SydTrain Status..."
     },
 
     start: function () {
         //self = this;
-        this.url = '';
-        this.fullAPIKey = "apikey " + this.config.apiKey;
+        Log.log("Starting module: " + this.name);
         this.depStopID = "";
-        this.arrStopID = "";
-        this.autoS = false;
-        this.activeItem = 0;
-        this.dispSched = false;
-        this.loaded = false;
-        this.currTrainLoc = {};
-        this.schedTrainOutput = "";
-        this.schedTrainHead = "";
-        this.boardTrainOutput = "Loading...";
-        this.boardTrainHead = "";
-        this.boardCount = 0;
-        this.getStopIDs();
-    },
-
-
-    getStopIDs: function () {
-
-        if (this.depStopID == "") {
-            var dParams = {
-                "id": "departure",
-                "name": this.config.departure,
-                "apiKey": this.fullAPIKey
-            };
-            this.sendSocketNotification("MMM_SYDTRAINS_GET_STOP_ID", dParams);
+        this.url = '';
+        this.config.dispSched = false;
+        this.depLoaded = false;
+        this.schLoaded = false;
+        this.incLoaded = false;
+        this.firstUpdateDOMFlag = false;
+        this.errorMessage = null;
+        this.departureBoard = {};
+        this.currentLocation = {};
+        this.incidents = {};
+        if (this.config.apiKey !== "") {
+            this.sendSocketNotification('MMM-SydTrain-Status_CONFIG', this.config);
+        } else {
+            this.errorMessage = 'Error: Missing API Key';
         };
-        if (this.arrStopID == "") {
-            var aParams = {
-                "id": "arrival",
-                "name": this.config.arrival,
-                "apiKey": this.fullAPIKey
-            };
-            this.sendSocketNotification("MMM_SYDTRAINS_GET_STOP_ID", aParams);
-        };
-    },
-
-
-   
-
-
-
-    gotStopID: function(params) {
-        if (params.id == "departure") {
-            this.depStopID = params.stopID;
-            if (this.arrStopID != "") {
-                this.loaded = true;
-            };
-        };
-        if (params.id == "arrival") {
-            this.arrStopID = params.stopID;
-            if (this.depStopID != "") {
-                this.loaded = true;
-            };
-        };
-        this.updateDom(this.config.animationSpeed);
-        this.getTrains();
-    },
-
-    gotTrainBoard: function (payload) {
         var self = this;
-        console.log("MMM-SydTrain-Status initialising gotTrainBoard function...");
-
-        if (this.autoS) {
-            var depStat = this.config.arrival;
-            var arrStat = this.config.departure;
-            this.boardTrainHead = this.config.departure + " - ARRIVALS";
-        } else {
-            var depStat = this.config.departure;
-            var arrStat = this.config.arrival;
-            this.boardTrainHead = this.config.departure + " - DEPARTURES";
-        };
-
-        var htmlText = "<table><tr><th>DEPART</th><th>TIME</th><th>ARRIVE</th><th>TIME</th><th>MINS</th><th>DELAY</th></tr>";
-        /*
-        payload.depBoard.forEach(function (leg) {
-            var depTime = moment(leg.dep).format("HH:mm");
-            var arrTime = moment(leg.arr).format("HH:mm");
-            var dur = leg.dur;
-            if (this.autoS) {
-                var del = leg.arrDel;
-            } else {
-                var del = leg.depDel;
-            };
-            htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
-            var summary = "";
-            var summ = leg.summ;
-            for (i = 0; i < summ.length; i++) {
-                if (i < summ.length - 1) {
-                    summary = summary + summ[i] + "  --  ";
-                } else {
-                    summary = summary + summ[i];
-                };
-            };
-            htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
-        });
-        */
-        if (payload.depBoard.length > 5) {
-            var depLength = 5;
-        } else {
-            var depLength = payload.depBoard.length;
-        };
-        for (di = 0; di < depLength; di++) {
-            var tempB = payload.depBoard[di];
-            var depTime = moment(tempB.dep).format("HH:mm");
-            var arrTime = moment(tempB.arr).format("HH:mm");
-            var dur = tempB.dur;
-            if (this.autoS) {
-                var del = tempB.arrDel;
-            } else {
-                var del = tempB.depDel;
-            };
-            htmlText = htmlText + "<tr><td>" + depStat + "</td><td>" + depTime + "</td><td>" + arrStat + "</td><td>" + arrTime + "</td><td>" + dur + "</td><td>" + del + "</td></tr>";
-            var summary = "";
-            var summ = tempB.summ;
-            for (i = 0; i < summ.length; i++) {
-                if (i < summ.length - 1) {
-                    summary = summary + summ[i] + "  --  ";
-                } else {
-                    summary = summary + summ[i];
-                };
-            };
-            htmlText = htmlText + '<tr><td colspan="6">' + summary + '</td></tr>';
-        };
-
-
-
-
-        htmlText = htmlText + '</table>';
-        this.boardTrainOutput = htmlText;
-        self.updateDom(this.config.animationSpeed);
-
-        setInterval(function () {
-            //self.getTrains();
-            self.updateDom(this.config.animationSpeed);
-        }, this.config.updateInterval);
+        setTimeout(function () { self.firstUpdateDOM(); }, 2000);
     },
 
-    
-
-    getTrains: function () {
-
-        Log.log("MMM-SydTrain-Status initiating getTrains function...");
-        // TRAIN DEPARTURE BOARD FUNCTION
-        //DETERMINE WHETHER TO SWITCH DEPARTUER BOARD TO ARRIVALS
-        if (this.config.autoSwitch == "") {
-            this.autoS = false;
-        } else {
-            if ((moment().get("hour") < moment(this.config.autoSwitch, "HH:mm").get("hour"))) {
-                this.autoS = false;
-            } else {
-                if (moment().get("hour") == moment(this.config.autoSwitch, "HH:mm").get("hour")) {
-                    if (moment().get("minute") <= moment(this.config.autoSwitch, "HH:mm").get("minute")) {
-                        this.autoS = false;
-                    } else {
-                        this.autoS = true;
-                    };
-                } else {
-                    this.autoS = true;
-                };
-            };
-        };
-
-
-            if (this.loaded) {
-                if (this.autoS) {
-                    var tParams = {
-                        "depID": this.arrStopID,
-                        "arrID": this.depStopID,
-                        "tOffset": this.timeOffset * -1,
-                        "apiKey": this.fullAPIKey
-                    };
-                } else {
-                    var tParams = {
-                        "depID": this.depStopID,
-                        "arrID": this.arrStopID,
-                        "tOffset": 0,
-                        "apiKey": this.fullAPIKey
-                    };
-                };
-                if (this.boardCount > 5) {
-                    this.boardCount = 0;
-                };
-                if (this.boardCount == 0) {
-                    this.sendSocketNotification("MMM_SYDTRAINS_GET_TRAINBOARD", tParams);
-                };
-                this.boardCount ++;
-            };
-
-        // TRAIN SCHEDULE FUNCTION
-
+    firstUpdateDOM: function () {
+        this.firstUpdateDOMFlag = true;
+        this.updateDom();
     },
 
-
-
+    socketNotificationReceived: function(notification, payload) {
+        if (notification === "SYDTRAIN_DEPBOARD_UDPATE") {
+            this.departureBoard = payload;
+            this.depLoaded = true;
+            if (this.firstUpdateDOMFlag) {
+                this.updateDom();
+            };
+        };
+        if (notification === "SYDTRAIN_SCH_UPDATE") {
+            this.currentLocation = payload;
+            this.schLoaded = true;
+            if (this.firstUpdateDOMFlag) {
+                this.updateDom();
+            };
+        };
+        if (notification === "SYDTRAIN_INCIDENT_UPDATE") {
+            this.incidents = payload;
+            this.incLoaded = true;
+            if (this.firstUpdateDOMFlag) {
+                this.updateDom();
+            };
+        };
+        if (notification === "SYDTRAINS_GOT_STOPID") {
+            this.depStopID = payload;
+            var self = this;
+            setTimeout(function () { self.updateDom(); }, 2000);
+            this.updateDom();
+        };
+        if (notification === "SYDTRAIN_ERROR") {
+            this.errorMessage = "Error: Too Many REST Failures";
+            this.updateDom();
+        };
+    },
    
-
-    
-
-    socketNotificationReceived: function (notification, payload) {
-
-        console.log("MMM-SydTrain-Status socket notification received...");
-
-        if (notification === "MMM_SYDTRAINS_GOT_STOP_ID") {
-            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_STOP_ID");
-            this.gotStopID(payload);
-            this.updateDom(this.config.animationSpeed);
-        };
-        if (notification === "MMM_SYDTRAINS_GOT_TRAINBOARD") {
-            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_GOT_TRAINBOARD");
-            this.gotTrainBoard(payload);
-            //this.updateDom(this.config.animationSpeed);
-        };
-
-        if (notification === "MMM_SYDTRAINS_ERROR") {
-            console.log("MMM-SydTrain-Status socket notification received: MMM_SYDTRAINS_ERROR");
-            console.log(payload);
-        };
-    },
 
 
 
@@ -255,37 +99,23 @@ Module.register('MMM-SydTrain-Status', {
 
     getDom: function () {
 
+        if (this.errorMessage !== null) {
+            var wrapper = document.createElement("div");
+            wrapper.className = "small";
+            wrapper.innerHTML = this.errorMessage;
+            return wrapper;
+        };
+
         var wrapper = document.createElement("div");
-        var header = document.createElement("header");
-        var name = document.createElement("span");
+        wrapper.innerHTML = this.depStopID;
 
 
-        var table = document.createElement("div");
+        //DEPBOARD DOM FORMATTING
 
-        //FORMAT TESTING
-        table.className = "small";
-        wrapper.className = "Medium";
 
-        //var tableHead = document.createElement("header");
-        table.innerHTML = this.boardTrainOutput;
-        //tableHead.innerHTML = this.boardTrainOutput;
-        //table.appendChild(tableHead);
-        header.innerHTML = this.boardTrainHead;
-
-        wrapper.appendChild(header);
-        wrapper.appendChild(table);
-       
+        //SCH DOM FORMATTING
 
        
-       
-
-        //name.innerHTML = "" + this.url;
-        //name.innerHTML = "" + "DepID:" + this.depStopID + " / ArrID:" + this.arrStopID;
-
-
-        //header.appendChild(name);
-        //wrapper.appendChild(header);
-        //wrapper.appendChild(image);
 
         return wrapper;
     }
