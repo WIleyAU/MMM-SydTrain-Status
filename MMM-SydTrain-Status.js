@@ -32,6 +32,7 @@ Module.register('MMM-SydTrain-Status', {
         this.depStopID = "";
         this.url = '';
         this.config.dispSched = false;
+        this.showSchedule = false;
         this.schLoaded = false;
         this.incLoaded = false;
         this.firstUpdateDOMFlag = false;
@@ -39,7 +40,8 @@ Module.register('MMM-SydTrain-Status', {
         this.autoS = false;
         this.departureBoard = {};
         this.depLoaded = false;
-        this.currentLocation = {};
+        this.schCurrentLocation = {};
+        this.schPeriod = "";
         this.incidents = {};
         if (this.config.apiKey !== "") {
             this.sendSocketNotification('MMM-SydTrain-Status_CONFIG', this.config);
@@ -67,8 +69,17 @@ Module.register('MMM-SydTrain-Status', {
         };
         if (notification === "SYDTRAIN_SCH_UPDATE") {
             console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_SCH_UPDATE");
-            this.currentLocation = payload;
+            this.schCurrentLocation = payload.results;
+            this.schPeriod = payload.period;
             this.schLoaded = true;
+            if (this.firstUpdateDOMFlag) {
+                this.updateDom();
+            };
+        };
+        if (notification === "SYDTRAIN_HIDE_SCHEDULE") {
+            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_HIDE_SCHEDULE");
+            this.showSchedule = false;
+            this.schLoaded = false;
             if (this.firstUpdateDOMFlag) {
                 this.updateDom();
             };
@@ -207,19 +218,77 @@ Module.register('MMM-SydTrain-Status', {
 
 
         //SCH DOM FORMATTING
-        var scheduleWrapper = document.createElement("div");
-        var scheduleHeader = document.createElement("header");
-        scheduleHeader.className = "medium";
-        if (this.schLoaded) {
-            scheduleHeader.innerHTML = this.currentLocation.result;
+        if (this.showSchedule) {
+            var currLoc = this.schCurrentLocation.currLoc;
+            var currTripStops = this.schCurrentLocation.currTripStops;
+            var tripSumm = this.schCurrentLocation.tripSumm;
+            var scheduleWrapper = document.createElement("div");
+            var scheduleHeader = document.createElement("header");
+            scheduleHeader.className = "small";
+            if (this.schPeriod == "morn") {
+                var schHeader = this.departure + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.arrival + "  (" + tripSumm[0].dur + "mins)";
+            } else {
+                var schHeader = this.arrival + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.departure + "  (" + tripSumm[0].dur + "mins)";
+            };
+            scheduleHeader.innerHTML = schHeader;
             scheduleWrapper.appendChild(scheduleHeader);
+
+            var schDelay = docuemtn.createElement("div");
+            schDelay.className = "small"
+            if (currLoc.del == 0) {
+                var delay = "ON TIME";
+            } else {
+                if (currLoc.del < 0) {
+                    var delay = currLoc.del + "mins EALRY";
+                } else {
+                    var delay = currLoc.del + "mins LATE";
+                };
+            };
+            schDelay.innerHTML = delay;
+            scheduleWrapper.appendChild(schDelay);
+
+            var schTableWrapper = document.createElement("table");
+            var schHRow = document.createElement("tr");
+            var schHElement1 = document.createElement("th");
+            var schHElement2 = document.createElement("th");
+            var schHElement3 = document.createElement("th");
+            schHElement1.className = "small";
+            schHElement2.className = "small";
+            schHElement3.className = "small";
+            schHElement1.innerHTML = "PREVIOUS STOP";
+            schHElement2.innerHTML = "CURRENT STOP";
+            schHElement3.innerHTML = "NEXT STOP";
+            schHRow = document.appendChild(schHElement1);
+            schHRow = document.appendChild(schHElement2);
+            schHRow = document.appendChild(schHElement3);
+            schTableWrapper.appendChild(schHRow);
+
+            var schDRow = document.createElement("tr");
+            var schDElement1 = document.createElement("td");
+            var schDElement2 = document.createElement("td");
+            var schDElement3 = document.createElement("td");
+            schDElement1.className = "small";
+            schDElement2.className = "small";
+            schDElement3.className = "small";
+            schDElement1.innerHTML = currLoc.prevStop;
+            schDElement2.innerHTML = currLoc.currStop;
+            schDElement3.innerHTML = currLoc.nxtStop;
+            schDRow = document.appendChild(schDElement1);
+            schDRow = document.appendChild(schDElement2);
+            schDRow = document.appendChild(schDElement3);
+            schTableWrapper.appendChild(schDRow);
+
+            scheduleWrapper.appendChild(schTableWrapper);
+            wrapper.appendChild(scheduleWrapper);
+
         } else {
-            scheduleHeader.innerHTML = "Loading current train location...";
-            scheduleWrapper.appendChild(scheduleHeader);
-        };
+            var scheduleWrapper = document.createElement("div");
+            scheduleWrapper.className = "small";
+            scheduleWrapper.innerHTML = "No train schedule to display...";
+            wrapper.appendChild(scheduleWrapper);
+        }; //END SCH DOM FORMATTING
 
 
-        wrapper.appendChild(scheduleWrapper);
         wrapper.appendChild(boardWrapper);
         return wrapper;
     }

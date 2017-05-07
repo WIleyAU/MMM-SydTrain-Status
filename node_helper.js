@@ -78,8 +78,9 @@ module.exports = NodeHelper.create({
         if (this.showMorn || this.showEve) {
             console.log("MMM-SydTrain-Status calling updateCurrLocation function...");
             this.updateCurrLocation(theConfig);
+        } else {
+            this.sendSocketNotification("SYDTRAIN_HIDE_SCHEDULE",0);   
         };
-        this.sendSocketNotification("SYDTRAIN_SCH_UPDATE",{"result":"No trains to display"});
     },
 
     updateAutoSwitch: function(theConfig) {
@@ -252,7 +253,196 @@ module.exports = NodeHelper.create({
     },
 
     updateCurrLocation: function(theConfig) {
+        console.log("MMM-SydTrain-Status Initiating updateCurrLocation function...");
+        var self=this;
+        if (!this.autoS) {
+            var trainTime = moment(theConfig.mornTrain, "HH:mm").format("HHmm");
+            var depID = this.depStopID;
+            var arrID = this.arrStopID;
+            var depMacr = "arr";
+        } else {
+            var trainTime = moment(theConfig.eveTrain, "HH:mm").format("HHmm");
+            var depID = this.arrStopID;
+            var arrID = this.depStopID;
+            var depMacr = "dep";
+        };
+        var trainDate = new moment().format("YYYYMMDD");
+        var apiKey = "apikey " + theConfig.apiKey;
+        var results = [];
+        var testObj = {};
+        var tempURL = "https://api.transport.nsw.gov.au/v1/tp/trip?";
+        var finURL = "";
+        var qOptions = {
+            "outputFormat": "rapidJSON",
+            "coordOutputFormat": "EPSG:4326",
+            "depArrMacro": depMacr,
+            "itdDate": trainDate,
+            "itdTime": trainTime,
+            "type_origin": "stop",
+            "name_origin": depID,   //depID
+            "type_destination": "stop",
+            "name_destination": arrID,  //arrID
+            "TfNSWTR": "true"
+        };
+        finURL = tempURL + querystring.stringify(qOptions);
 
+        var requestSettings = {
+            method: "GET",
+            url: finURL,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": "apikey guuB5I4bVgHRYRV6o3PURPlKPVJrbGkTstvz"
+            },
+            encoding: null
+        };
+
+        request(requestSettings, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+
+                var items = JSON.parse(body);
+
+                var jCount = 0;
+                var journeys = items["journeys"];
+                var tripDetails = [];
+                var stopDetails = [];
+                var legs = journeys[0]["legs"];
+                var fares = journeys[0]["fare"];
+                var ttlDuration = 0;
+                var summary = [];
+                var legNumber = 0;
+                var depart = new moment();
+                var arrive = new moment();
+
+                var currLoc = {};
+                var prevStop = "";
+                var currStop = "";
+                var nxtStop = "";
+                var delay = 0;
+                var now = new moment().format("DD-MM-YYYY HH:mm");
+
+                legs.forEach(function (leg) {
+                    var stops = leg["stopSequence"];
+                    for (i = 0; i < stops.length; i++) {
+                        if (i < stops.length - 1) {
+                            if (stops[i]["departureTimePlanned"]) {
+                                stopDetails.push({
+                                    "stopName": stops[i]["name"],
+                                    "scTime": moment.utc(stops[i]["departureTimePlanned"]).local().format("DD-MM-YYYY HH:mm"),   //departure
+                                    "rlTime": moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
+                                });
+                                if (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) {
+                                    if (i == 0) {
+                                        prevStop = "WAITING";
+                                    } else {
+                                        prevStop = stops[i]["name"];
+                                    };
+                                };
+                                if ((moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) && (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") >= now)) {
+                                    currStop = stops[i]["name"];
+                                    nxtStop = stops[i + 1]["name"];
+                                };
+                                if ((moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") > now) && (nxtStop == "")) {
+                                    nxtStop = stops[i]["name"];
+                                    delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
+                                };
+                            };
+                        } else {
+                            stopDetails.push({
+                                "stopName": stops[i]["name"],
+                                "scTime": moment.utc(stops[i]["arrivalTimePlanned"]).local().format("DD-MM-YYYY HH:mm"),
+                                "rlTime": moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
+                            });
+                            if (moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) {
+                                currStop = stops[i]["name"];
+                                nxtStop = "ARRIVED";
+                                delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
+                            };
+                        };
+                    };
+                });
+                if (currStop == "") {
+                    currStop = "IN-TRANSIT";
+                };
+                currLoc = {
+                    "prevStop": prevStop,
+                    "currStop": currStop,
+                    "nxtStop": nxtStop,
+                    "del": delay
+                };
+
+                legs.forEach(function (leg) {
+
+                    ttlDuration += leg["duration"];
+                    var origin = leg["origin"];
+                    // console.log("DepTimePl: " + origin["departureTimePlanned"]);
+                    var destination = leg["destination"];
+
+                    if (legNumber == 0) {
+                        depart = moment.utc(origin["departureTimePlanned"]).local().format("DD-MM-YY HH:mm");
+                    };
+                    if (legNumber == legs.length - 1) {
+                        arrive = moment.utc(destination["arrivalTimePlanned"]).local().format("DD-MM-YY HH:mm");
+                    };
+                    var transportation = leg["transportation"];
+
+                    var routeType = transportation["product"]["class"];
+
+                    switch (routeType) {
+                        case 1: summary.push("Train"); break;
+                        case 4: summary.push("Light Rail"); break;
+                        case 5: summary.push("Bus"); break;
+                        case 7: summary.push("Coach"); break;
+                        case 9: summary.push("Ferry"); break;
+                        case 11: summary.push("School Bus"); break;
+                        case 99: summary.push("Walk"); break;
+                        case 100: summary.push("Walk"); break;
+                    };
+
+                    legNumber++;
+                });
+
+                // console.log("StopDetails: ",stopDetails);
+                var minutes = ttlDuration / 60;
+                // console.log(depart + " - " + arrive + " : " + minutes + "mins");
+                // console.log(summary);
+                tripDetails.push({
+                    "id": 0,
+                    "dep": depart,
+                    "arr": arrive,
+                    "dur": minutes,
+                    "summ": summary
+                });
+
+
+
+
+                var results = {
+                    "currLoc": currLoc,
+                    "currTripStops": stopDetails,
+                    "tripSumm": tripDetails
+                };
+
+                self.gotSchedule(results);
+
+            }
+            else {
+                console.log(" Error: " + response.statusCode);
+            }
+        });
+    },
+
+    gotSchedule: function(results) {
+        if (this.showMorn) {
+            var tPeriod = "morn";
+        } else {
+            var tPeriod = "eve";
+        };
+        var retRes = {
+            "period":tPeriod,
+            "results": results};
+        console.log("MMM-SYDTRAIN_STATUS sending socket notification: SYDTRAIN_SCH_UPDATE");
+        this.sendSocketNotification("SYDTRAIN_SCH_UPDATE", retRes);
+        console.log("MMM-SYDTRAIN_STATUS socket notification sent: SYDTRAIN_SCH_UPDATE");
     },
 
     gotStopID: function(resParams) {
