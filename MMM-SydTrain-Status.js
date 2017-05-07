@@ -36,6 +36,7 @@ Module.register('MMM-SydTrain-Status', {
         this.incLoaded = false;
         this.firstUpdateDOMFlag = false;
         this.errorMessage = null;
+        this.autoS = false;
         this.departureBoard = {};
         this.depLoaded = false;
         this.currentLocation = {};
@@ -56,7 +57,9 @@ Module.register('MMM-SydTrain-Status', {
 
     socketNotificationReceived: function(notification, payload) {
         if (notification === "SYDTRAIN_DEPBOARD_UDPATE") {
-            this.departureBoard = payload;
+            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_DEPBOARD_UPDATE");
+            this.departureBoard = payload.results;
+            this.autoS = payload.autoS;
             this.depLoaded = true;
             if (this.firstUpdateDOMFlag) {
                 this.updateDom();
@@ -75,12 +78,6 @@ Module.register('MMM-SydTrain-Status', {
             if (this.firstUpdateDOMFlag) {
                 this.updateDom();
             };
-        };
-        if (notification === "SYDTRAINS_GOT_STOPID") {
-            this.depStopID = payload;
-            var self = this;
-            setTimeout(function () { self.updateDom(); }, 2000);
-            this.updateDom();
         };
         if (notification === "SYDTRAIN_ERROR") {
             this.errorMessage = "Error: Too Many REST Failures";
@@ -112,12 +109,12 @@ Module.register('MMM-SydTrain-Status', {
         //DEPBOARD DOM FORMATTING
         var boardWrapper = document.createElement("div");
         if (this.depLoaded) {
-            if (this.departureBoard.autoS) {
+            if (this.autoS) {
                 var header = this.departure + " - ARRIVALS (from " + this.arrival + ")";
             } else {
                 var header = this.departure + " - DEPARTURES (to " + this.arrival + ")";
             };
-            var boardDetails = this.departureBoard.results.depBoard;
+            var boardDetails = this.departureBoard.depBoard;
             if (boardDetails.length > 5) {
                 var detLength = 5;
             } else {

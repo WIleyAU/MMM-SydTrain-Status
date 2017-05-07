@@ -197,8 +197,11 @@ module.exports = NodeHelper.create({
     gotDepBoard: function(results) {
         var retRes = {
             "autoS": this.autoS,
-            "results": results};
+            "results": results
+        };
+        console.log("MMM-SYDTRAIN-STATUS sending notification: SYDTRAIN_DEPBOARD_UDPATE");
         this.sendSocketNotification("SYDTRAIN_DEPBOARD_UDPATE",retRes);
+        console.log("MMM-SYDTRAIN-STATUS notification sent: SYDTRAIN_DEPBOARD_UDPATE");
     },
 
     updateCurrLocation: function(theConfig) {
