@@ -75,7 +75,7 @@ module.exports = NodeHelper.create({
         } else {
             this.showEve = false;
         };
-        if (showMorn || showEve) {
+        if (this.showMorn || this.showEve) {
             console.log("MMM-SydTrain-Status calling updateCurrLocation function...");
             this.updateCurrLocation(theConfig);
         };
