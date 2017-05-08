@@ -265,7 +265,7 @@ Module.register('MMM-SydTrain-Status', {
             schHRow = document.appendChild(schHElement1);
             schHRow = document.appendChild(schHElement2);
             schHRow = document.appendChild(schHElement3);
-            schTableWrapper.appendChild(schHRow);
+            //schTableWrapper.appendChild(schHRow);
             /*
             var schDRow = document.createElement("tr");
             var schDElement1 = document.createElement("td");
@@ -282,7 +282,7 @@ Module.register('MMM-SydTrain-Status', {
             schDRow = document.appendChild(schDElement3);
             schTableWrapper.appendChild(schDRow);
             */
-            //scheduleWrapper.appendChild(schTableWrapper);
+            scheduleWrapper.appendChild(schTableWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
