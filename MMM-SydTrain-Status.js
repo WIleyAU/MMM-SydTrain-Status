@@ -251,6 +251,10 @@ Module.register('MMM-SydTrain-Status', {
             scheduleWrapper.appendChild(schDelay);
 
             var schTableWrapper = document.createElement("div");
+            var trainPos = currLoc.prevStop + " - " + currLoc.currStop + " - " + currLoc.nxtStop;
+            schTableWrapper.innerHTML = trainPos;
+
+            /*
             //var schTable = document.createElement("table");
             var schHRow = document.createElement("tr");
             var schHElement1 = document.createElement("th");
@@ -266,7 +270,7 @@ Module.register('MMM-SydTrain-Status', {
             schHElement3.innerHTML = "NEXT STOP";
             schHRow = document.appendChild(schHElement3);
             //schTable.appendChild(schHRow);
-            /*
+            
             var schDRow = document.createElement("tr");
             var schDElement1 = document.createElement("td");
             var schDElement2 = document.createElement("td");
@@ -281,9 +285,10 @@ Module.register('MMM-SydTrain-Status', {
             schDRow = document.appendChild(schDElement2);
             schDRow = document.appendChild(schDElement3);
             schTableWrapper.appendChild(schDRow);
-            */
+          
             //schTableWrapper.appendChild(schTable);
-            //scheduleWrapper.appendChild(schTableWrapper);
+            */
+            scheduleWrapper.appendChild(schTableWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
