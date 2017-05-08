@@ -282,7 +282,7 @@ Module.register('MMM-SydTrain-Status', {
             schDRow = document.appendChild(schDElement3);
             schTableWrapper.appendChild(schDRow);
             */
-            scheduleWrapper.appendChild(schTableWrapper);
+            //scheduleWrapper.appendChild(schTableWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
