@@ -236,7 +236,7 @@ Module.register('MMM-SydTrain-Status', {
             scheduleHeader.innerHTML = schHeader;
             scheduleWrapper.appendChild(scheduleHeader);
 
-            var schDelay = docuemtn.createElement("div");
+            var schDelay = document.createElement("div");
             schDelay.className = "small"
             if (currLoc.del == 0) {
                 var delay = "ON TIME";
