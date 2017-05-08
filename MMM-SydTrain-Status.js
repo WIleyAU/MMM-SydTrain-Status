@@ -59,7 +59,7 @@ Module.register('MMM-SydTrain-Status', {
 
     socketNotificationReceived: function(notification, payload) {
         if (notification === "SYDTRAIN_DEPBOARD_UDPATE") {
-            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_DEPBOARD_UPDATE");
+            Log.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_DEPBOARD_UPDATE");
             this.departureBoard = payload.results;
             this.autoS = payload.autoS;
             this.depLoaded = true;
@@ -68,7 +68,9 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
         if (notification === "SYDTRAIN_SCH_UPDATE") {
-            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_SCH_UPDATE");
+            Log.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_SCH_UPDATE");
+            Log.log("MMM-SYDTRAIN-STATUS schUpdate payload results: ", payload.results);
+            Log.log("MMM-SYDTRAIN-STATUS schUpdate payload period: ", payload.period);
             this.schCurrentLocation = payload.results;
             this.schPeriod = payload.period;
             this.schLoaded = true;
@@ -77,7 +79,7 @@ Module.register('MMM-SydTrain-Status', {
             };
         };
         if (notification === "SYDTRAIN_HIDE_SCHEDULE") {
-            console.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_HIDE_SCHEDULE");
+            Log.log("MMM-SYDTRAIN-STATUS notification received: SYDTRAIN_HIDE_SCHEDULE");
             this.showSchedule = false;
             this.schLoaded = false;
             if (this.firstUpdateDOMFlag) {
