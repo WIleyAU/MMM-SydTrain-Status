@@ -32,14 +32,14 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function (notification, theConfig) {
         var self = this;
         if (notification === 'MMM-SydTrain-Status_CONFIG') {
-            console.log("MMM-SydTrain-Status GET_STOP_ID Notification Received: ", theConfig);
             var self = this;
             this.getStopID(theConfig, "dep");
             setTimeout(function() {self.getStopID(theConfig, "arr"); }, 1500);
 
             //DETERMINE LIVE TRAIN SCHEDULE
-           // setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
-           // setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
+            console.log("SYDTRAIN_STATUS calling UpdateShowCurrent function...");
+            setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
+            setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
 
             //DETERMINE DEPARTUREBOARD UPDATES
             setTimeout(function() {self.updateDepBoard(theConfig); }, 5000);
@@ -79,8 +79,12 @@ module.exports = NodeHelper.create({
             console.log("MMM-SydTrain-Status calling updateCurrLocation function...");
             this.updateCurrLocation(theConfig);
         } else {
+            console.log("MMM-SydTrain-Status sending socket notification: SYDTRAIN_HIDE_SCHEDULE");
             this.sendSocketNotification("SYDTRAIN_HIDE_SCHEDULE",0);   
+            console.log("MMM-SydTrain-Status socket notification sent: SYDTRAIN_HIDE_SCHEDULE");
         };
+        console.log("MMM-SydTrain-Status updateShowCurrent this.showMorn = " + this.showMorn);
+        console.log("MMM-SydTrain-Status updateShowCurrent this.showEve = " + this.showEve);
     },
 
     updateAutoSwitch: function(theConfig) {
@@ -291,14 +295,17 @@ module.exports = NodeHelper.create({
             url: finURL,
             headers: {
                 "Accept": "application/json",
-                "Authorization": "apikey guuB5I4bVgHRYRV6o3PURPlKPVJrbGkTstvz"
+                "Authorization": apiKey
             },
             encoding: null
         };
-
+        console.log("MMM-SydTrain-Status initiating updateCurrLocation HTTP request...");
         request(requestSettings, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
 
+            console.log("MMM-SydTrain-Status updateCurrLocation response code: " + response.statusCode);
+
+            if (!error && response.statusCode == 200) {
+                
                 var items = JSON.parse(body);
 
                 var jCount = 0;
@@ -422,6 +429,7 @@ module.exports = NodeHelper.create({
                     "tripSumm": tripDetails
                 };
 
+                console.log("MMM-SydTrain-Status calling gotSchedule function...");
                 self.gotSchedule(results);
 
             }
@@ -432,6 +440,7 @@ module.exports = NodeHelper.create({
     },
 
     gotSchedule: function(results) {
+        console.log("MMM-SydTrain-Status initiating gotSchedule function...");
         if (this.showMorn) {
             var tPeriod = "morn";
         } else {
