@@ -74,6 +74,7 @@ Module.register('MMM-SydTrain-Status', {
             this.schCurrentLocation = payload.results;
             this.schPeriod = payload.period;
             this.schLoaded = true;
+            this.showSchedule = true;
             if (this.firstUpdateDOMFlag) {
                 this.updateDom();
             };
