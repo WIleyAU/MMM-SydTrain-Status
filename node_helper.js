@@ -38,11 +38,11 @@ module.exports = NodeHelper.create({
 
             //DETERMINE LIVE TRAIN SCHEDULE
             console.log("SYDTRAIN_STATUS calling UpdateShowCurrent function...");
-            setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
+            setTimeout(function() {self.updateShowCurrent(theConfig); }, 8000);
             setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
 
             //DETERMINE DEPARTUREBOARD UPDATES
-            setTimeout(function() {self.updateDepBoard(theConfig); }, 5000);
+            setTimeout(function() {self.updateDepBoard(theConfig); }, 4000);
             setInterval(function() {self.updateDepBoard(theConfig); }, theConfig.refreshRateDepBoard);
 
             //Determine Incident Updates

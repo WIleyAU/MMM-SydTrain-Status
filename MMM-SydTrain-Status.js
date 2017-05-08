@@ -229,9 +229,9 @@ Module.register('MMM-SydTrain-Status', {
             var scheduleHeader = document.createElement("header");
             scheduleHeader.className = "small";
             if (this.schPeriod == "morn") {
-                var schHeader = this.departure + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.arrival + "  (" + tripSumm[0].dur + "mins)";
+                var schHeader = this.config.departure + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.config.arrival + "  (" + tripSumm[0].dur + "mins)";
             } else {
-                var schHeader = this.arrival + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.departure + "  (" + tripSumm[0].dur + "mins)";
+                var schHeader = this.config.arrival + " : " + moment(tripSumm[0].dep, "DD-MM-YY HH:mm").format("HH:mm") + "  --  " + moment(tripSumm[0].arr, "DD-MM-YY HH:mm").format("HH:mm") + " : " + this.config.departure + "  (" + tripSumm[0].dur + "mins)";
             };
             scheduleHeader.innerHTML = schHeader;
             scheduleWrapper.appendChild(scheduleHeader);
@@ -250,7 +250,7 @@ Module.register('MMM-SydTrain-Status', {
             schDelay.innerHTML = delay;
             scheduleWrapper.appendChild(schDelay);
 
-            /*
+            
             var schTableWrapper = document.createElement("table");
             var schHRow = document.createElement("tr");
             var schHElement1 = document.createElement("th");
@@ -266,7 +266,7 @@ Module.register('MMM-SydTrain-Status', {
             schHRow = document.appendChild(schHElement2);
             schHRow = document.appendChild(schHElement3);
             schTableWrapper.appendChild(schHRow);
-
+            /*
             var schDRow = document.createElement("tr");
             var schDElement1 = document.createElement("td");
             var schDElement2 = document.createElement("td");
@@ -281,9 +281,8 @@ Module.register('MMM-SydTrain-Status', {
             schDRow = document.appendChild(schDElement2);
             schDRow = document.appendChild(schDElement3);
             schTableWrapper.appendChild(schDRow);
-
-            scheduleWrapper.appendChild(schTableWrapper);
             */
+            scheduleWrapper.appendChild(schTableWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
