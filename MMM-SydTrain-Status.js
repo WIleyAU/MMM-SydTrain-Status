@@ -262,9 +262,9 @@ Module.register('MMM-SydTrain-Status', {
             schHElement1.innerHTML = "PREVIOUS STOP";
             schHElement2.innerHTML = "CURRENT STOP";
             schHElement3.innerHTML = "NEXT STOP";
-            schHRow = document.appendChild(schHElement1);
-            schHRow = document.appendChild(schHElement2);
-            schHRow = document.appendChild(schHElement3);
+            //schHRow = document.appendChild(schHElement1);
+            //schHRow = document.appendChild(schHElement2);
+            //schHRow = document.appendChild(schHElement3);
             //schTable.appendChild(schHRow);
             /*
             var schDRow = document.createElement("tr");
