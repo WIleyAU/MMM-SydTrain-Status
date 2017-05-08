@@ -38,8 +38,8 @@ module.exports = NodeHelper.create({
             setTimeout(function() {self.getStopID(theConfig, "arr"); }, 1500);
 
             //DETERMINE LIVE TRAIN SCHEDULE
-            setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
-            setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
+           // setTimeout(function() {self.updateShowCurrent(theConfig); }, 4000);
+           // setInterval(function() {self.updateShowCurrent(theConfig); }, theConfig.refreshRateCurrLoc);
 
             //DETERMINE DEPARTUREBOARD UPDATES
             setTimeout(function() {self.updateDepBoard(theConfig); }, 5000);
@@ -146,7 +146,7 @@ module.exports = NodeHelper.create({
             url: finURL,
             headers: {
                 "Accept": "application/json",
-                "Authorization": "apikey guuB5I4bVgHRYRV6o3PURPlKPVJrbGkTstvz"
+                "Authorization": apiKey
             },
             encoding: null
         };
