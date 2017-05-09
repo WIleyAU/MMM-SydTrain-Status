@@ -207,11 +207,11 @@ Module.register('MMM-SydTrain-Status', {
                     var tranIcon = document.createElement("img");
                     var iconImg = "";
                     switch (summ[si]) {
-                        case "Train": iconImg = "AWT-Train.png"; break;
-                        case "Bus": iconImg = "AWT-Bus.png"; break;
-                        case "Walk": iconImg = "walk.png"; break;
-                        case "Ferry": iconImg = ""; break;
-                        case "Light Rail": iconImg = "";
+                        case "Train": iconImg = "Train-Small.png"; break;
+                        case "Bus": iconImg = "Bus-Small.png"; break;
+                        case "Walk": iconImg = "Walk-Small.png"; break;
+                        case "Ferry": iconImg = "Ferry-Small"; break;
+                        case "Light Rail": iconImg = "LightRail-Small";
                     };
                     tranIcon.src = this.file("images/" + iconImg);
                     iconWrap.appendChild(tranIcon);
@@ -283,11 +283,20 @@ Module.register('MMM-SydTrain-Status', {
             //schTableWrapper.innerHTML = trainPos;
 
             var trainIcon = document.createElement("img");
-            trainIcon.src = this.file("images/AWT-Train-Large.png");
+            trainIcon.src = this.file("images/Train-Large.png");
             scheduleWrapper.appendChild(trainIcon);
             var busIcon = document.createElement("img");
-            busIcon.src = this.file("images/AWT-Bus-Large.png");
+            busIcon.src = this.file("images/Bus-Large.png");
             scheduleWrapper.appendChild(busIcon);
+            var lrIcon = document.createElement("img");
+            lrIcon.src = this.file("images/LightRail-Large.png");
+            scheduleWrapper.appendChild(lrIcon);
+            var ferryIcon = document.createElement("img");
+            ferryIcon.src = this.file("images/Ferry-Large.png");
+            scheduleWrapper.appendChild(ferryIcon);
+            var walkIcon = document.createElement("img");
+            walkIcon.src = this.file("images/Walk-Large.png");
+            scheduleWrapper.appendChild(walkIcon);
 
 
             var schTable = document.createElement("div");
