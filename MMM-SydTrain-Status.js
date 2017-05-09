@@ -209,7 +209,7 @@ Module.register('MMM-SydTrain-Status', {
                     switch (summ[si]) {
                         case "Train": iconImg = "AWT-Train.png"; break;
                         case "Bus": iconImg = "AWT-Bus.png"; break;
-                        case "Walk": iconImg = ""; break;
+                        case "Walk": iconImg = "walk.png"; break;
                         case "Ferry": iconImg = ""; break;
                         case "Light Rail": iconImg = "";
                     };
