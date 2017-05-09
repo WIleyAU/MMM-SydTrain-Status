@@ -141,6 +141,7 @@ Module.register('MMM-SydTrain-Status', {
             var headElement3 = document.createElement("th");
             var headElement4 = document.createElement("th");
             var headElement5 = document.createElement("th");
+            var headElement6 = document.createElement("th");
             var boardTable = document.createElement("table");
 
             var boardHeader = document.createElement("header");
@@ -153,12 +154,15 @@ Module.register('MMM-SydTrain-Status', {
             headElement3.className = "small";
             headElement4.className = "small";
             headElement5.className = "small";
+            headElement6.className = "small";
             headElement1.innerHTML = "DEP";
             headRow.appendChild(headElement1);
             headElement2.innerHTML = " -- ";
             headRow.appendChild(headElement2);
             headElement3.innerHTML = "ARR";
             headRow.appendChild(headElement3);
+            headElement6.innerHTML = "&nbsp;";
+            headRow.appendChild(headElement6);
             headElement4.innerHTML = "(mins)";
             headRow.appendChild(headElement4);
             headElement5.innerHTML = "DELAY";
@@ -181,6 +185,7 @@ Module.register('MMM-SydTrain-Status', {
                 var iElement3 = document.createElement("td");
                 var iElement4 = document.createElement("td");
                 var iElement5 = document.createElement("td");
+                var iElement6 = document.createElement("td");
                 iElement1.className = "xsmall";
                 iElement2.className = "xsmall";
                 iElement3.className = "xsmall";
@@ -192,27 +197,48 @@ Module.register('MMM-SydTrain-Status', {
                 iRow.appendChild(iElement2);
                 iElement3.innerHTML = arrTime;
                 iRow.appendChild(iElement3);
+
+                var summary = "";
+                var summ = boardDetails[bi].summ;
+                var iconWrap = document.createElement("div");
+                for (si = 0; si < summ.length; si++) {
+                    var tranIcon = document.createElement("img");
+                    var iconImg = "";
+                    switch (summ[si]) {
+                        case "Train": iconImg = "AWT-Train.png"; break;
+                        case "Bus": iconImg = "AWT-Bus.png"; break;
+                        case "Walk": iconImg = ""; break;
+                        case "Ferry": iconImg = ""; break;
+                        case "Light Rail": iconImg = "";
+                    };
+                    tranIcon.src = this.file("images/" + iconImg);
+                    iconWrap.appendChild(tranIcon);
+                }
+                /*
+                if (si < summ.length - 1) {
+                    summary = summary + summ[si] + "  --  ";
+                } else {
+                    summary = summary + summ[si];
+                };
+                */
+                iElement6.appendChild(iconWrap);
+                iRow.appendChild(iElement6);
+
                 iElement4.innerHTML = dur;
                 iRow.appendChild(iElement4);
                 iElement5.innerHTML = del;
                 iRow.appendChild(iElement5);
                 boardTable.appendChild(iRow);
+            /*
                 var summRow = document.createElement("tr");
                 var summElement = document.createElement("td");
                 summElement.className = "xsmall";
                 summElement.colSpan = "5";
-                var summary = "";
-                var summ = boardDetails[bi].summ;
-                for (si = 0; si < summ.length; si++) {
-                    if (si < summ.length - 1) {
-                        summary = summary + summ[si] + "  --  ";
-                    } else {
-                        summary = summary + summ[si];
-                    };
-                };
+                
                 summElement.innerHTML = summary;
                 summRow.appendChild(summElement);
                 boardTable.appendChild(summRow);
+                */
             };
             boardWrapper.appendChild(boardTable);
         } else {
