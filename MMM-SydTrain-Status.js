@@ -264,15 +264,15 @@ Module.register('MMM-SydTrain-Status', {
             schHead.className = "rTableRow";
             var schHCell1 = document.createElement("div");
             schHCell1.className = "small rTableHead";
-            schHCell1.innerHTML = "PREV STOP";
+            schHCell1.innerHTML = "PREV&nbsp;STOP";
             schHead.appendChild(schHCell1);
             var schHCell2 = document.createElement("div");
             schHCell2.className = "small rTableHead";
-            schHCell2.innerHTML = "CURR STOP";
+            schHCell2.innerHTML = "CURR&nbsp;STOP";
             schHead.appendChild(schHCell2);
             var schHCell3 = document.createElement("div");
             schHCell3.className = "small rTableHead";
-            schHCell3.innerHTML = "NEXT STOP";
+            schHCell3.innerHTML = "NEXT&nbsp;STOP";
             schHead.appendChild(schHCell3);
             schTable.appendChild(schHead);
 
