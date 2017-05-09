@@ -191,6 +191,7 @@ Module.register('MMM-SydTrain-Status', {
                 iElement3.className = "small";
                 iElement4.className = "small";
                 iElement5.className = "small";
+                iElement6.className = "rImageCell";
                 iElement1.innerHTML = depTime;
                 iRow.appendChild(iElement1);
                 iElement2.innerHTML = " -- ";
@@ -201,6 +202,7 @@ Module.register('MMM-SydTrain-Status', {
                 var summary = "";
                 var summ = boardDetails[bi].summ;
                 var iconWrap = document.createElement("div");
+                iconWrap.className = "rImageDiv";
                 for (si = 0; si < summ.length; si++) {
                     var tranIcon = document.createElement("img");
                     var iconImg = "";
