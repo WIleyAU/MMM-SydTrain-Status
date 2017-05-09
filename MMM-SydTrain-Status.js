@@ -186,11 +186,11 @@ Module.register('MMM-SydTrain-Status', {
                 var iElement4 = document.createElement("td");
                 var iElement5 = document.createElement("td");
                 var iElement6 = document.createElement("td");
-                iElement1.className = "xsmall";
-                iElement2.className = "xsmall";
-                iElement3.className = "xsmall";
-                iElement4.className = "xsmall";
-                iElement5.className = "xsmall";
+                iElement1.className = "small";
+                iElement2.className = "small";
+                iElement3.className = "small";
+                iElement4.className = "small";
+                iElement5.className = "small";
                 iElement1.innerHTML = depTime;
                 iRow.appendChild(iElement1);
                 iElement2.innerHTML = " -- ";
