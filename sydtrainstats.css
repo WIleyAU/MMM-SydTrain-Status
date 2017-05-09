@@ -16,10 +16,12 @@
 
 .rTable {
     display: table;
+    width: 100%;
 }
 
 .rTableRow {
     display: table-row;
+    width: 100%;
 }
 
 .rTableHeading {
