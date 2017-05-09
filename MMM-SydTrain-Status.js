@@ -257,8 +257,9 @@ Module.register('MMM-SydTrain-Status', {
             var trainIcon = document.createElement("img");
             trainIcon.src = this.file("images/AWT-Train.png");
             scheduleWrapper.appendChild(trainIcon);
-            
-
+            var busIcon = document.createElement("img");
+            busIcon.src = this.file("images/AWT-Bus.png");
+            scheduleWrapper.appendChild(busIcon);
 
 
             var schTable = document.createElement("div");
