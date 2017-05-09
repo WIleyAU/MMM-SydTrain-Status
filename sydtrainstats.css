@@ -41,3 +41,12 @@
     float: left;
     width: 33%;
 }
+
+.rImageCell {
+    display: table-cell;
+    vertical-align: middle !important;
+}
+
+.rImageDiv {
+    vertical-align: middle !important;
+}
