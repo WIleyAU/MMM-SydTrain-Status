@@ -254,6 +254,9 @@ Module.register('MMM-SydTrain-Status', {
             //var trainPos = currLoc.prevStop + " - " + currLoc.currStop + " - " + currLoc.nxtStop;
             //schTableWrapper.innerHTML = trainPos;
 
+            var trainIcon = document.createElement("img");
+            trainIcon.src = this.file("images/AWT-Train.png");
+            scheduleWrapper.appendChild(trainIcon);
             
 
 
