@@ -36,4 +36,6 @@
 
 .rTableCell, .rTableHead {
     display: table-cell;
+    float: left;
+    width: 33%;
 }
