@@ -281,9 +281,9 @@ Module.register('MMM-SydTrain-Status', {
             //Determine the background iMAGE TO DISPLAY
             var currLocWrapper = document.createElement("div");
             currLocWrapper.id = "schContainer";
-            var schImg = document.createElement("img");
-            schImg.src = this.file("images/" + currLoc.schImg);
-            currLocWrapper.appendChild(schImg);
+            var schImgBackground = document.createElement("img");
+            schImgBackground.src = this.file("images/" + currLoc.schImg);
+            currLocWrapper.appendChild(schImgBackground);
 
             //Determine the transport vehicle to display
             var vehicalIcon = "images/Train-Large.png";
@@ -356,7 +356,7 @@ Module.register('MMM-SydTrain-Status', {
                 currLocWrapper.appendChild(labelDiv3);
             };
             */
-            scheduleWrapper.appendChild(currLocWrapper);
+            //scheduleWrapper.appendChild(currLocWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
