@@ -325,6 +325,9 @@ module.exports = NodeHelper.create({
                 var currStop = "";
                 var nxtStop = "";
                 var delay = 0;
+                var schImage = "";
+                var schPos = "";
+                var currVehicle = "";
                 var now = new moment().format("DD-MM-YYYY HH:mm");
 
                 legs.forEach(function (leg) {
@@ -340,13 +343,27 @@ module.exports = NodeHelper.create({
                                 if (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) {
                                     if (i == 0) {
                                         prevStop = "WAITING";
+                                        schImage = "SchedTrip_AtDep.png";
                                     } else {
                                         prevStop = stops[i]["name"];
+                                        schImage = "SchedTrip_InTransit.png";
+                                        var posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))))/(moment.duration(moment(stops[i+1].arrivalTimeEstimated, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))));
+                                        if (posCalc<0.05)  {
+                                            schPos = "schPos1";
+                                        } else  if (posCalc<0.35) {
+                                            schPos = "schPos2";
+                                        } else if (posCalc<0.65) {
+                                            schPos = "schPos3";
+                                        } else if (posCalc<1) {
+                                            schPos = "schPos4";
+                                        };
                                     };
                                 };
                                 if ((moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) && (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") >= now)) {
                                     currStop = stops[i]["name"];
                                     nxtStop = stops[i + 1]["name"];
+                                    schImage = "TripSched_AtStop.png";
+                                    schPos = "schPos3";
                                 };
                                 if ((moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") > now) && (nxtStop == "")) {
                                     nxtStop = stops[i]["name"];
@@ -363,6 +380,7 @@ module.exports = NodeHelper.create({
                                 currStop = stops[i]["name"];
                                 nxtStop = "ARRIVED";
                                 delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
+                                schImage = "SchedTrip_AtArr.png";
                             };
                         };
                     };
@@ -374,7 +392,9 @@ module.exports = NodeHelper.create({
                     "prevStop": prevStop,
                     "currStop": currStop,
                     "nxtStop": nxtStop,
-                    "del": delay
+                    "del": delay,
+                    "schImage": schImage,
+                    "schPos": schPos
                 };
 
                 legs.forEach(function (leg) {

@@ -50,3 +50,80 @@
 .rImageDiv {
     vertical-align: middle !important;
 }
+#schContainer {
+    width: 340px;
+    height: 110px;
+    position: relative;
+}
+
+    #schContainer img {
+        width: 100%;
+    }
+
+#schLabel1 {
+    position: absolute;
+    left: 5%;
+    top: 85px;
+    z-index:1;
+}
+
+#schLabel2-1 {
+    position: absolute;
+    top: 5px;
+    right: 50%;
+    text-align: left;
+    z-index: 2;
+}
+#schLabel2-2 {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    text-align: right;
+    z-index: 3;
+}
+
+#schLabel3 {
+    position: absolute;
+    top: 85px;
+    right: 5%;
+    text-align: right;
+    z-index: 4;
+}
+
+
+
+/* Transport image locations*/
+#schPos1 {
+    position: absolute;
+    right: 253px;
+    top: 30px;
+    z-index: 20;
+}
+
+#schPos2 {
+    position: absolute;
+    right: 200px;
+    top: 30px;
+    z-index: 21;
+}
+
+#schPos3 {
+    position: absolute;
+    right: 145px;
+    top: 30px;
+    z-index: 22;
+}
+
+#schPos4 {
+    position: absolute;
+    right: 90px;
+    top: 30px;
+    z-index: 23;
+}
+
+#schPos5 {
+    position: absolute;
+    right: 37px;
+    top: 30px;
+    z-index: 24;
+}

@@ -17,7 +17,7 @@ Module.register('MMM-SydTrain-Status', {
         depAfter: true,
         autoSwitch: "14:30",
         mornTrain: "08:45",
-        eveTrain: "17:06",
+        eveTrain: "19:06",
         showIncidents: false,
         refreshRateIncidents: 10*60*1000,
         refreshRateDepBoard: 5*60*1000,
@@ -278,81 +278,85 @@ Module.register('MMM-SydTrain-Status', {
             schDelay.innerHTML = delay;
             scheduleWrapper.appendChild(schDelay);
 
-            var schTableWrapper = document.createElement("div");
-            //var trainPos = currLoc.prevStop + " - " + currLoc.currStop + " - " + currLoc.nxtStop;
-            //schTableWrapper.innerHTML = trainPos;
+            //Determine the background iMAGE TO DISPLAY
+            var currLocWrapper = document.createElement("div");
+            currLocWrapper.id = "schContainer";
+            var schImg = document.createElement("img");
+            schImg.src = this.file("images/" + currLoc.schImg);
+            currLocWrapper.appendChild(schImg);
 
-            var trainIcon = document.createElement("img");
-            trainIcon.src = this.file("images/Train-Large.png");
-            scheduleWrapper.appendChild(trainIcon);
-            var busIcon = document.createElement("img");
-            busIcon.src = this.file("images/Bus-Large.png");
-            scheduleWrapper.appendChild(busIcon);
-            var lrIcon = document.createElement("img");
-            lrIcon.src = this.file("images/LightRail-Large.png");
-            scheduleWrapper.appendChild(lrIcon);
-            var ferryIcon = document.createElement("img");
-            ferryIcon.src = this.file("images/Ferry-Large.png");
-            scheduleWrapper.appendChild(ferryIcon);
-            var walkIcon = document.createElement("img");
-            walkIcon.src = this.file("images/Walk-Large.png");
-            scheduleWrapper.appendChild(walkIcon);
+            //Determine the transport vehicle to display
+            var vehicalIcon = "images/Train-Large.png";
+
+            //Determine the position of icon display
+            var currLocImg = document.createElement("div");
+            currLocImg.id = currLoc.schPos;
+            var currLocImgIcon = document.createElement("img");
+            currLocImgIcon = this.file(vehicalIcon);
+            currLocImg.appendChild(currLocImgIcon);
+            currLocWrapper.appendChild(currLocImg);
+
+            //Determine the station labels to apply
+            var prevStopSplit = currLoc.prevStop.split(",");
+            var currStopSplit = currLoc.currStop.split(",");
+            var nxtStopSplit = currLoc.nxtStop.split(",");
+            if (currLoc.currStop == "IN-TRANSIT") {
+                var labelDiv1 = document.createElement("div");
+                labelDiv1.id = "schLabel1";
+                labelDiv1.innerHTML = prevStopSplit[0];
+                currLocWrapper.appendChild(labelDiv1);
+
+                var labelDiv2 = document.createElement("div");
+                labelDiv2.id = "schLabel3";
+                labelDiv2.innerHTML = nxtStopSplit[0];
+                currLocWrapper.appendChild(labelDiv2);
+            } else if (currLoc.nxtStop == "ARRIVED") {
+                var labelDiv1 = document.createElement("div");
+                labelDiv1.id = "schLabel1";
+                labelDiv1.innerHTML = prevStopSplit[0];
+                currLocWrapper.appendChild(labelDiv1);
+
+                var labelDiv2 = document.createElement("div");
+                labelDiv2.id = "schLabel3";
+                labelDiv2.innerHTML = currStopSplit[0];
+                currLocWrapper.appendChild(labelDiv2);
+            } else if (currLoc.prevStop == "WAITING") {
+                var labelDiv1 = document.createElement("div");
+                labelDiv1.id = "schLabel1";
+                labelDiv1.innerHTML = currStopSplit[0];
+                currLocWrapper.appendChild(labelDiv1);
+
+                var labelDiv2 = document.createElement("div");
+                labelDiv2.id = "schLabel3";
+                labelDiv2.innerHTML = nxtStopSplit[0];
+                currLocWrapper.appendChild(labelDiv2);
+            } else {
+                var labelDiv1 = document.createElement("div");
+                labelDiv1.id = "schLabel1";
+                labelDiv1.innerHTML = prevStopSplit[0];
+                currLocWrapper.appendChild(labelDiv1);
+
+                var labelLength = currStopSplit[0].length;
+                var labelLength1 = Math.floor(labelLength / 2);
+                var labelString1 = currStopSplit[0].substring(0, labelLength1);
+                var labelString2 = currStopSplit[0].substring(labelLength1, labelLength);
+                var labelDiv21 = document.createElement("div");
+                labelDiv21.id = "schLabel2-1";
+                labelDiv21.innerHTML = labelString1;
+                currLocWrapper.appendChild(labelDiv21);
+                var labelDiv22 = document.createElement("div");
+                labelDiv22.id = "schLabel2-2";
+                labelDiv22.innerHTML = labelString2;
+                currLocWrapper.appendChild(labelDiv22);
 
 
-            var schTable = document.createElement("div");
+                var labelDiv3 = document.createElement("div");
+                labelDiv3.id = "schLabel3";
+                labelDiv3.innerHTML = nxtStopSplit[0];
+                currLocWrapper.appendChild(labelDiv3);
+            };
 
-            var schHead = document.createElement("div");
-            schHead.className = "rTableRow";
-            var schHCell1 = document.createElement("div");
-            schHCell1.className = "small rTableHead";
-            schHCell1.innerHTML = "PREV&nbsp;STOP";
-            schHead.appendChild(schHCell1);
-            var schHCell2 = document.createElement("div");
-            schHCell2.className = "small rTableHead";
-            schHCell2.innerHTML = "CURR&nbsp;STOP";
-            schHead.appendChild(schHCell2);
-            var schHCell3 = document.createElement("div");
-            schHCell3.className = "small rTableHead";
-            schHCell3.innerHTML = "NEXT&nbsp;STOP";
-            schHead.appendChild(schHCell3);
-            schTable.appendChild(schHead);
-
-            schTableWrapper.appendChild(schTable);
-
-            /*
-            var schHRow = document.createElement("tr");
-            var schHElement1 = document.createElement("th");
-            var schHElement2 = document.createElement("th");
-            var schHElement3 = document.createElement("th");
-            schHElement1.className = "small";
-            schHElement2.className = "small";
-            schHElement3.className = "small";
-            schHElement1.innerHTML = "PREVIOUS STOP";
-            schHRow = document.appendChild(schHElement1);
-            schHElement2.innerHTML = "CURRENT STOP";
-            schHRow = document.appendChild(schHElement2);
-            schHElement3.innerHTML = "NEXT STOP";
-            schHRow = document.appendChild(schHElement3);
-            //schTable.appendChild(schHRow);
-            
-            var schDRow = document.createElement("tr");
-            var schDElement1 = document.createElement("td");
-            var schDElement2 = document.createElement("td");
-            var schDElement3 = document.createElement("td");
-            schDElement1.className = "small";
-            schDElement2.className = "small";
-            schDElement3.className = "small";
-            schDElement1.innerHTML = currLoc.prevStop;
-            schDElement2.innerHTML = currLoc.currStop;
-            schDElement3.innerHTML = currLoc.nxtStop;
-            schDRow = document.appendChild(schDElement1);
-            schDRow = document.appendChild(schDElement2);
-            schDRow = document.appendChild(schDElement3);
-            schTableWrapper.appendChild(schDRow);
-          
-            //schTableWrapper.appendChild(schTable);
-            */
-            scheduleWrapper.appendChild(schTableWrapper);
+            scheduleWrapper.appendChild(currLocWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
