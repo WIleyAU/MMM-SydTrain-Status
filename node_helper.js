@@ -348,11 +348,11 @@ module.exports = NodeHelper.create({
                                         prevStop = stops[i]["name"];
                                         schImage = "SchedTrip_InTransit.png";
                                         var posCalc = 0;
-                                        posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))))/(moment.duration(moment(stops[i+1].arrivalTimeEstimated, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))));
+                                        posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"))))/(moment.duration(moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"))));
                                         console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc now: " + now);
-                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + stops[i].departureTimeEstimated);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(now.diff(stops[i].departureTimeEstimated))));
+                                        console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now, "DD-MM-YYYY HH:mm"));
+                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"));
+                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")))));
                                         if (posCalc<0.05)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.35) {
