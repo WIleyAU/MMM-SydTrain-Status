@@ -9,7 +9,7 @@ Module.register('MMM-SydTrain-Status', {
 
     defaults: {
         updateInterval: 20000,
-        animationSpeed: 1000,
+        animationSpeed: 3000,
         header: '',
         apiKey: "",
         departure: "Leura",
