@@ -295,7 +295,7 @@ Module.register('MMM-SydTrain-Status', {
             currLocImgIcon = this.file(vehicalIcon);
             currLocImg.appendChild(currLocImgIcon);
             currLocWrapper.appendChild(currLocImg);
-
+            /*
             //Determine the station labels to apply
             var prevStopSplit = currLoc.prevStop.split(",");
             var currStopSplit = currLoc.currStop.split(",");
@@ -355,7 +355,7 @@ Module.register('MMM-SydTrain-Status', {
                 labelDiv3.innerHTML = nxtStopSplit[0];
                 currLocWrapper.appendChild(labelDiv3);
             };
-
+            */
             scheduleWrapper.appendChild(currLocWrapper);
             wrapper.appendChild(scheduleWrapper);
 
