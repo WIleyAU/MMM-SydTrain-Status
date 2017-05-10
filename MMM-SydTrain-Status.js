@@ -288,6 +288,7 @@ Module.register('MMM-SydTrain-Status', {
             //Determine the transport vehicle to display
             var vehicalIcon = "images/Train-Large.png";
 
+            /*
             //Determine the position of icon display
             var currLocImg = document.createElement("div");
             currLocImg.id = currLoc.schPos;
@@ -356,7 +357,7 @@ Module.register('MMM-SydTrain-Status', {
                 currLocWrapper.appendChild(labelDiv3);
             };
             */
-            //scheduleWrapper.appendChild(currLocWrapper);
+            scheduleWrapper.appendChild(currLocWrapper);
             wrapper.appendChild(scheduleWrapper);
 
         } else {
