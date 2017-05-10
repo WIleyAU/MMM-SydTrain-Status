@@ -347,7 +347,9 @@ module.exports = NodeHelper.create({
                                     } else {
                                         prevStop = stops[i]["name"];
                                         schImage = "SchedTrip_InTransit.png";
-                                        var posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))))/(moment.duration(moment(stops[i+1].arrivalTimeEstimated, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))));
+                                        var posCalc = 0;
+                                        posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))))/(moment.duration(moment(stops[i+1].arrivalTimeEstimated, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))));
+                                        console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
                                         if (posCalc<0.05)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.35) {
