@@ -23,6 +23,7 @@ module.exports = NodeHelper.create({
         this.autoS = false;
         this.showMorn = false;
         this.showEve = false;
+        this.hideSchedule = true;
     },
 
     
@@ -76,12 +77,16 @@ module.exports = NodeHelper.create({
             this.showEve = false;
         };
         if (this.showMorn || this.showEve) {
+            this.hideSchedule = false;
             console.log("MMM-SydTrain-Status calling updateCurrLocation function...");
             this.updateCurrLocation(theConfig);
         } else {
-            console.log("MMM-SydTrain-Status sending socket notification: SYDTRAIN_HIDE_SCHEDULE");
-            this.sendSocketNotification("SYDTRAIN_HIDE_SCHEDULE",0);   
-            console.log("MMM-SydTrain-Status socket notification sent: SYDTRAIN_HIDE_SCHEDULE");
+            if (!this.hideSchedule) {
+                this.hideSchedule = true;
+                console.log("MMM-SydTrain-Status sending socket notification: SYDTRAIN_HIDE_SCHEDULE");
+                this.sendSocketNotification("SYDTRAIN_HIDE_SCHEDULE",0);   
+                console.log("MMM-SydTrain-Status socket notification sent: SYDTRAIN_HIDE_SCHEDULE");
+            }
         };
         console.log("MMM-SydTrain-Status updateShowCurrent this.showMorn = " + this.showMorn);
         console.log("MMM-SydTrain-Status updateShowCurrent this.showEve = " + this.showEve);
@@ -348,11 +353,12 @@ module.exports = NodeHelper.create({
                                         prevStop = stops[i]["name"];
                                         schImage = "SchedTrip_InTransit.png";
                                         var posCalc = 0;
-                                        posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"))))/(moment.duration(moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")).diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")));
+                                       // posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"))))/(moment.duration(moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")).diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")));
                                         console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now, "DD-MM-YYYY HH:mm"));
-                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"));
-                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")))));
+                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + stops[i]["departureTimeEstimated"]);
+                                        console.log("MMM-SYDTRAIN_STATS posCalc prev2: " + moment(stops[i]["departureTimeEstimated"],"DD-MM-YYYY HH:mm"));
+                                       // console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")))));
                                         if (posCalc<0.05)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.35) {
