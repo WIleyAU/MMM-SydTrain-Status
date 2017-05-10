@@ -282,7 +282,7 @@ Module.register('MMM-SydTrain-Status', {
             var currLocWrapper = document.createElement("div");
             currLocWrapper.id = "schContainer";
             var schImgBackground = document.createElement("img");
-            schImgBackground.src = this.file("images/" + currLoc.schImg);
+            schImgBackground.src = this.file("images/" + currLoc.schImage);
             currLocWrapper.appendChild(schImgBackground);
 
             //Determine the transport vehicle to display
