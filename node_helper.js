@@ -355,7 +355,7 @@ module.exports = NodeHelper.create({
                                         var posCalc = 0;
                                         var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         var nxtTime = moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
-                                       // posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"))))/(moment.duration(moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")).diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")));
+                                        posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
                                         console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment(prevTime).format());
