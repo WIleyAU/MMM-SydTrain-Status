@@ -17,7 +17,7 @@ Module.register('MMM-SydTrain-Status', {
         depAfter: true,
         autoSwitch: "14:30",
         mornTrain: "08:45",
-        eveTrain: "19:06",
+        eveTrain: "23:30",
         showIncidents: false,
         refreshRateIncidents: 10*60*1000,
         refreshRateDepBoard: 5*60*1000,
