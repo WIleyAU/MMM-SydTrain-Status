@@ -288,14 +288,14 @@ Module.register('MMM-SydTrain-Status', {
             //Determine the transport vehicle to display
             var vehicalIcon = "images/Train-Large.png";
 
-            /*
+            
             //Determine the position of icon display
-            var currLocImg = document.createElement("div");
-            currLocImg.id = currLoc.schPos;
+            var currLocIconWrapper = document.createElement("div");
+            currLocIconWrapper.id = currLoc.schPos;
             var currLocImgIcon = document.createElement("img");
-            currLocImgIcon = this.file(vehicalIcon);
-            currLocImg.appendChild(currLocImgIcon);
-            currLocWrapper.appendChild(currLocImg);
+            currLocImgIcon.src = this.file(vehicalIcon);
+            currLocIconWrapper.appendChild(currLocImgIcon);
+            currLocWrapper.appendChild(currLocIconWrapper);
             /*
             //Determine the station labels to apply
             var prevStopSplit = currLoc.prevStop.split(",");
