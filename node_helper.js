@@ -350,9 +350,9 @@ module.exports = NodeHelper.create({
                                         var posCalc = 0;
                                         posCalc = (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))))/(moment.duration(moment(stops[i+1].arrivalTimeEstimated, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"))));
                                         console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now, "DD-MM-YYYY HH:mm"));
-                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm"));
-                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment(stops[i].departureTimeEstimated, "DD-MM-YYYY HH:mm")))));
+                                        console.log("MMM-SYDTRAIN-STATS posCalc now: " + now);
+                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + stops[i].departureTimeEstimated);
+                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(now.diff(stops[i].departureTimeEstimated))));
                                         if (posCalc<0.05)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.35) {

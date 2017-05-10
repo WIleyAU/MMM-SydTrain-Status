@@ -76,7 +76,7 @@ Module.register('MMM-SydTrain-Status', {
             this.schLoaded = true;
             this.showSchedule = true;
             if (this.firstUpdateDOMFlag) {
-                this.updateDom();
+                this.updateDom(2000);
             };
         };
         if (notification === "SYDTRAIN_HIDE_SCHEDULE") {
