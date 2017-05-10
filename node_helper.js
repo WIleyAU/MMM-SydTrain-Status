@@ -360,7 +360,7 @@ module.exports = NodeHelper.create({
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment(prevTime).format());
                                         //console.log("MMM-SYDTRAIN_STATS posCalc prev2: " + moment(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm"));
-                                       // console.log("MMM-SYDTRAIN-STATS posCalc diff: " + (moment.duration(moment(now, "DD-MM-YYYY HH:mm").diff(moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")))));
+                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + moment.duration(moment(now).diff(prevTime)));
                                         if (posCalc<0.05)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.35) {
