@@ -362,16 +362,6 @@ module.exports = NodeHelper.create({
                                         var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         var nxtTime = moment.utc(stops[ti]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
-                                        console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
-                                        console.log("MMM-SYDTRAIN-STATS posCalc prevTime: " + moment(prevTime).format());
-                                        console.log("MMM-SYDTRAIN-STATS posCalc nxtTime: " + moment(nxtTime).format());
-                                        console.log("MMM-SYDTRAIN-STATS posCalc nxtStop: " + stops[ti]["arrivalTimeEstimated"]);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc stop[i]: " + i);
-                                        console.log("MMM-SYDTRAIN-STATS posCalc stops: " + stops.length);
-                                        console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.duration(moment(now).diff(prevTime)));
-                                        console.log("MMM-SYDTRAIN_STATS posCalc prev2: " + moment.duration(moment(nxtTime).diff(prevTime)));
-                                        console.log("MMM-SYDTRAIN-STATS posCalc diff: " + moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime)));
                                         if (posCalc<0.1)  {
                                             schPos = "schPos1";
                                         } else  if (posCalc<0.2) {
@@ -404,6 +394,9 @@ module.exports = NodeHelper.create({
                                     nxtStop = stops[si]["name"];
                                     schImage = "TripSched_AtStop.png";
                                     schPos = "schPos5";
+                                    console.log("MMM-SYDTRAIN-STATS i num: " + i);
+                                    console.log("MMM-SYDTRAIN-STATS si num: " + si);
+                                    console.log("MMM-SYDTRAIN-STATS si stop: " + stops[si]["name"]);
                                 };
                                 if ((moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") > now) && (nxtStop == "")) {
                                     nxtStop = stops[i]["name"];
