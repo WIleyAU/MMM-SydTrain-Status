@@ -382,15 +382,22 @@ Module.register('MMM-SydTrain-Status', {
             
             scheduleWrapper.appendChild(currLocWrapper);
             wrapper.appendChild(scheduleWrapper);
-
+            var spaceWrapper = document.createElement("div");
+            spaceWrapper.className = "xsmall";
+            spaceWrapper.innerHTML = "&nbsp;";
+            wrapper.appendChild(spaceWrapper);
         } else {
             var scheduleWrapper = document.createElement("div");
             scheduleWrapper.className = "small";
             scheduleWrapper.innerHTML = "No train schedule to display...";
             wrapper.appendChild(scheduleWrapper);
+            var spaceWrapper = document.createElement("div");
+            spaceWrapper.className = "xsmall";
+            spaceWrapper.innerHTML = "&nbsp;";
+            wrapper.appendChild(spaceWrapper);
         }; //END SCH DOM FORMATTING
 
-
+        
         wrapper.appendChild(boardWrapper);
         return wrapper;
     }
