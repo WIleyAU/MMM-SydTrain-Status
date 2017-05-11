@@ -338,7 +338,7 @@ module.exports = NodeHelper.create({
                 var currVehicle = "";
                 var now = new moment().format("DD-MM-YYYY HH:mm");
 
-                for (li=0;li<legs;li++) {
+                for (li=0;li<legs.length;li++) {
                     var stops = legs[li]["stopSequence"];
 
                     var transportation = legs[li]["transportation"];
