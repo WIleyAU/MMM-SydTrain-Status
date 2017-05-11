@@ -372,14 +372,26 @@ module.exports = NodeHelper.create({
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.duration(moment(now).diff(prevTime)));
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev2: " + moment.duration(moment(nxtTime).diff(prevTime)));
                                         console.log("MMM-SYDTRAIN-STATS posCalc diff: " + moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime)));
-                                        if (posCalc<0.05)  {
+                                        if (posCalc<0.1)  {
                                             schPos = "schPos1";
-                                        } else  if (posCalc<0.35) {
+                                        } else  if (posCalc<2) {
                                             schPos = "schPos2";
-                                        } else if (posCalc<0.65) {
+                                        } else if (posCalc<3) {
                                             schPos = "schPos3";
-                                        } else {
+                                        } else if (posCalc<4) {
                                             schPos = "schPos4";
+                                        } else if (posCalc<5) {
+                                            schPos = "schPos5";
+                                        } else if (posCalc<6) {
+                                            schPos = "schPos6";
+                                        } else if (posCalc<7) {
+                                            schPos = "schPos7";
+                                        } else if (posCalc<8) {
+                                            schPos = "schPos8";
+                                        } else if (posCalc<9) {
+                                            schPos = "schPos9";
+                                        } else {
+                                            schPos = "schPos10";
                                         };
                                     };
                                 };
