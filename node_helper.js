@@ -355,8 +355,9 @@ module.exports = NodeHelper.create({
                                         prevStop = stops[i]["name"];
                                         schImage = "SchedTrip_InTransit.png";
                                         var posCalc = 0;
+                                        var ti = i+1;
                                         var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
-                                        var nxtTime = moment.utc(stops[i+1]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
+                                        var nxtTime = moment.utc(stops[ti]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
                                         console.log("MMM-SYDTRAIN-STATS posCalc: " + posCalc);
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
