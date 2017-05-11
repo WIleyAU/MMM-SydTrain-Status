@@ -290,7 +290,7 @@ Module.register('MMM-SydTrain-Status', {
             currLocWrapper.appendChild(schImgBackground);
 
             //Determine the transport vehicle to display
-            var vehicalIcon = "images/Train-Large.png";
+            var vehicalIcon = "images/" + currLoc.vehicleImage;
 
             
             //Determine the position of icon display

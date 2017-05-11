@@ -327,6 +327,7 @@ module.exports = NodeHelper.create({
                 var depart = new moment();
                 var arrive = new moment();
 
+                var currVehicle = "";
                 var currLoc = {};
                 var prevStop = "";
                 var currStop = "";
@@ -337,8 +338,146 @@ module.exports = NodeHelper.create({
                 var currVehicle = "";
                 var now = new moment().format("DD-MM-YYYY HH:mm");
 
+                for (li=0;li<legs;li++) {
+                    var stops = legs[li]["stopSequence"];
+
+                    var transportation = legs[li]["transportation"];
+                    var routeType = transportation["product"]["class"];
+                    var vehicleType = "";
+                    switch (routeType) {
+                        case 1: vehicleType="Train"; break;
+                        case 4: vehicleType="Light Rail"; break;
+                        case 5: vehicleType="Bus"; break;
+                        case 7: vehicleType="Coach"; break;
+                        case 9: vehicleType="Ferry"; break;
+                        case 11: vehicleType="School Bus"; break;
+                        case 99: vehicleType="Walk"; break;
+                        case 100: vehicleType="Walk"; break;
+                    };
+
+                    for (i = 0; i < stops.length; i++) {
+                        if (i < stops.length - 1) {
+                            if (stops[i]["departureTimePlanned"]) {
+                                stopDetails.push({
+                                    "stopName": stops[i]["name"],
+                                    "scTime": moment.utc(stops[i]["departureTimePlanned"]).local().format("DD-MM-YYYY HH:mm"),   //departure
+                                    "rlTime": moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
+                                });
+                                if (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) {
+                                    if (li==0 && i == 0) {
+                                        prevStop = "WAITING";
+                                        schImage = "SchedTrip_AtDep.png";
+                                    } else {
+                                        prevStop = stops[i]["name"];
+                                        schImage = "SchedTrip_InTransit.png";
+                                        currVehicle = vehicleType;
+                                        var posCalc = 0;
+                                        var ti = i+1;
+                                        while (!stops[ti].arrivalTimeEstimated && ti<stops.length) {
+                                            ti++;
+                                        };
+                                        var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
+                                        var nxtTime = moment.utc(stops[ti]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
+                                        posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
+                                        if (posCalc<0.1)  {
+                                            schPos = "schPos1";
+                                        } else  if (posCalc<0.2) {
+                                            schPos = "schPos2";
+                                        } else if (posCalc<0.3) {
+                                            schPos = "schPos3";
+                                        } else if (posCalc<0.4) {
+                                            schPos = "schPos4";
+                                        } else if (posCalc<0.5) {
+                                            schPos = "schPos5";
+                                        } else if (posCalc<0.6) {
+                                            schPos = "schPos6";
+                                        } else if (posCalc<0.7) {
+                                            schPos = "schPos7";
+                                        } else if (posCalc<0.8) {
+                                            schPos = "schPos8";
+                                        } else if (posCalc<0.9) {
+                                            schPos = "schPos9";
+                                        } else {
+                                            schPos = "schPos10";
+                                        };
+                                    };
+                                };
+                                if ((moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) && (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") >= now)) {
+                                    currStop = stops[i]["name"];
+                                    var si=i+1;
+                                    while (!stops[si].arrivalTimePlanned && si<stops.length) {
+                                        si++;
+                                    }
+                                    nxtStop = stops[si]["name"];
+                                    schImage = "TripSched_AtStop.png";
+                                    schPos = "schPos5";
+                                    console.log("MMM-SYDTRAIN-STATS i num: " + i);
+                                    console.log("MMM-SYDTRAIN-STATS si num: " + si);
+                                    console.log("MMM-SYDTRAIN-STATS si stop: " + stops[si]["name"]);
+                                };
+                                if ((moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") > now) && (nxtStop == "")) {
+                                    nxtStop = stops[i]["name"];
+                                    delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
+                                };
+                            };
+                        } else {
+                            stopDetails.push({
+                                "stopName": stops[i]["name"],
+                                "scTime": moment.utc(stops[i]["arrivalTimePlanned"]).local().format("DD-MM-YYYY HH:mm"),
+                                "rlTime": moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
+                            });
+                            if (ji == legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) {
+                                currStop = stops[i]["name"];
+                                nxtStop = "ARRIVED";
+                                delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
+                                schImage = "SchedTrip_AtArr.png";
+                            } else if (ji < legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) { 
+                                prevStop = stops[i]["name"];
+                                schImage = "SchedTrip_InTransit.png";
+                                var posCalc = 0;
+                                var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
+                                var nxtTime = moment.utc(legs[li+1]["stopSequence"][0]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
+                                posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
+                                if (posCalc<0.1)  {
+                                    schPos = "schPos1";
+                                } else  if (posCalc<0.2) {
+                                    schPos = "schPos2";
+                                } else if (posCalc<0.3) {
+                                    schPos = "schPos3";
+                                } else if (posCalc<0.4) {
+                                    schPos = "schPos4";
+                                } else if (posCalc<0.5) {
+                                    schPos = "schPos5";
+                                } else if (posCalc<0.6) {
+                                    schPos = "schPos6";
+                                } else if (posCalc<0.7) {
+                                    schPos = "schPos7";
+                                } else if (posCalc<0.8) {
+                                    schPos = "schPos8";
+                                } else if (posCalc<0.9) {
+                                    schPos = "schPos9";
+                                } else {
+                                    schPos = "schPos10";
+                                };
+                            };
+                        };
+                    };
+                };
+                var vehicleImage = "";
+                switch (currVehicle) {
+                    case "Train": vehicleImage="Train-Large.png"; break;
+                    case "Light Rail": vehicleImage="LightRail-Large.png"; break;
+                    case "Bus": vehicleImage="Bus-Large.png"; break;
+                    case "Coach": vehicleImage="Bus-Large.png"; break;
+                    case "Ferry": vehicleImage="Ferry-Large.png"; break;
+                    case "School Bus": vehicleImage="Bus-Large.png"; break;
+                    case "Walk": vehicleImage="Walk-Large.png"; break;
+                    case "Walk": vehicleImage="Walk-Large.png"; break;
+                };
+                /*
                 legs.forEach(function (leg) {
                     var stops = leg["stopSequence"];
+
                     for (i = 0; i < stops.length; i++) {
                         if (i < stops.length - 1) {
                             if (stops[i]["departureTimePlanned"]) {
@@ -418,7 +557,7 @@ module.exports = NodeHelper.create({
                         };
                     };
                 });
-
+                */
 
 
                 if (currStop == "") {
@@ -430,7 +569,8 @@ module.exports = NodeHelper.create({
                     "nxtStop": nxtStop,
                     "del": delay,
                     "schImage": schImage,
-                    "schPos": schPos
+                    "schPos": schPos,
+                    "vehicleImage": vehicleImage
                 };
 
                 legs.forEach(function (leg) {
