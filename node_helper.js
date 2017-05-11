@@ -64,6 +64,10 @@ module.exports = NodeHelper.create({
         console.log("MMM-SydTrain-Status initiating updateShowCurrent function...");
 
         var now = new moment();
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent now: " + now.get("hour"));
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain-2: " + moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour"));
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain+3: " + moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"));
+
         if ((now.get("hour") >= moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour"))) {
             this.showMorn = true;
             this.showEve = false;
