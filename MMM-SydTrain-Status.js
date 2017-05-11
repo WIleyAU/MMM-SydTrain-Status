@@ -94,6 +94,15 @@ Module.register('MMM-SydTrain-Status', {
                 this.updateDom();
             };
         };
+        if (notification === "SYDTRAIN_INVALID_STOPNAME") {
+            if (payload.id == "dep") {
+                var direction = "Departure";
+            } else {
+                var direction = "Arrival";
+            };
+            this.errorMessage = "Error: Not a valid " + direction + " Train Station name";
+            this.updateDom();
+        };
         if (notification === "SYDTRAIN_ERROR") {
             this.errorMessage = "Error: Too Many REST Failures";
             this.updateDom();
