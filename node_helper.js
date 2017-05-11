@@ -63,24 +63,25 @@ module.exports = NodeHelper.create({
     updateShowCurrent: function(theConfig) {
         console.log("MMM-SydTrain-Status initiating updateShowCurrent function...");
 
-        var now = new moment();
-        console.log("MMM-SYDTRAIN-STATS updateShowCurrent now: " + now.get("hour"));
-        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain-2: " + moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour"));
-        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain+3: " + moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"));
+        //var now = new moment();
+        var now = new moment().get("hour");
         var mornHourBefore = moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour");
         var mornHourAfter = moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour");
         var eveHourBefore = moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour");
         var eveHourAfter = moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour");
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent now: " + now);
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain-2: " + eveHourBefore);
+        console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain+3: " + eveHourAfter);
 
         //if ((now.get("hour") >= moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour"))) {
-        if (now.get("hour") >= mornHourBefore && now.get("hour") <= mornHourAfter) {
+        if (now >= mornHourBefore && now <= mornHourAfter) {
             this.showMorn = true;
             this.showEve = false;
         } else {
             this.showMorn = false;
         };
         //if ((now.get("hour") >= moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"))) {
-        if (now.get("hour") >= eveHourBefore && now.get("hour") <= eveHourAfter) {
+        if (now >= eveHourBefore && now <= eveHourAfter) {
             this.showEve = true;
             this.showMorn = false;
         } else {
@@ -732,6 +733,7 @@ module.exports = NodeHelper.create({
                         "id": direction,
                         "stopID": results[0]
                     };
+                    console.log("MMM-SYDTRAIN-STATS stopid = " + results[0]);
                 };
                 self.gotStopID(resParams);
             }
