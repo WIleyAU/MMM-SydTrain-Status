@@ -362,6 +362,7 @@ module.exports = NodeHelper.create({
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
                                         console.log("MMM-SYDTRAIN-STATS posCalc prevTime: " + moment(prevTime).format());
                                         console.log("MMM-SYDTRAIN-STATS posCalc nxtTime: " + moment(nxtTime).format());
+                                        console.log("MMM-SYDTRAIN-STATS posCalc nxtStop: " + stops[i+1]["arrivalTimeEstimated"]);
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.duration(moment(now).diff(prevTime)));
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev2: " + moment.duration(moment(nxtTime).diff(prevTime)));
                                         console.log("MMM-SYDTRAIN-STATS posCalc diff: " + moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime)));
