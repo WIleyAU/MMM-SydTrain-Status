@@ -304,36 +304,43 @@ Module.register('MMM-SydTrain-Status', {
             if (currLoc.currStop == "IN-TRANSIT") {
                 var labelDiv1 = document.createElement("div");
                 labelDiv1.id = "schLabel1";
+                labelDiv1.className = "xsmall";
                 labelDiv1.innerHTML = prevStopSplit[0];
                 currLocWrapper.appendChild(labelDiv1);
 
                 var labelDiv2 = document.createElement("div");
                 labelDiv2.id = "schLabel3";
+                labelDiv2.className = "xsmall";
                 labelDiv2.innerHTML = nxtStopSplit[0];
                 currLocWrapper.appendChild(labelDiv2);
             } else if (currLoc.nxtStop == "ARRIVED") {
                 var labelDiv1 = document.createElement("div");
                 labelDiv1.id = "schLabel1";
+                labelDiv1.className = "xsmall";
                 labelDiv1.innerHTML = prevStopSplit[0];
                 currLocWrapper.appendChild(labelDiv1);
 
                 var labelDiv2 = document.createElement("div");
                 labelDiv2.id = "schLabel3";
+                labelDiv2.className = "xsmall";
                 labelDiv2.innerHTML = currStopSplit[0];
                 currLocWrapper.appendChild(labelDiv2);
             } else if (currLoc.prevStop == "WAITING") {
                 var labelDiv1 = document.createElement("div");
                 labelDiv1.id = "schLabel1";
+                labelDiv1.className = "xsmall";
                 labelDiv1.innerHTML = currStopSplit[0];
                 currLocWrapper.appendChild(labelDiv1);
 
                 var labelDiv2 = document.createElement("div");
                 labelDiv2.id = "schLabel3";
+                labelDiv2.className = "xsmall";
                 labelDiv2.innerHTML = nxtStopSplit[0];
                 currLocWrapper.appendChild(labelDiv2);
             } else {
                 var labelDiv1 = document.createElement("div");
                 labelDiv1.id = "schLabel1";
+                labelDiv1.className = "xsmall";
                 labelDiv1.innerHTML = prevStopSplit[0];
                 currLocWrapper.appendChild(labelDiv1);
 
@@ -343,16 +350,19 @@ Module.register('MMM-SydTrain-Status', {
                 var labelString2 = currStopSplit[0].substring(labelLength1, labelLength);
                 var labelDiv21 = document.createElement("div");
                 labelDiv21.id = "schLabel2-1";
+                labelDiv21.className = "xsmall";
                 labelDiv21.innerHTML = labelString1;
                 currLocWrapper.appendChild(labelDiv21);
                 var labelDiv22 = document.createElement("div");
                 labelDiv22.id = "schLabel2-2";
+                labelDiv22.className = "xsmall";
                 labelDiv22.innerHTML = labelString2;
                 currLocWrapper.appendChild(labelDiv22);
 
 
                 var labelDiv3 = document.createElement("div");
                 labelDiv3.id = "schLabel3";
+                labelDiv3.className = "xsmall";
                 labelDiv3.innerHTML = nxtStopSplit[0];
                 currLocWrapper.appendChild(labelDiv3);
             };
