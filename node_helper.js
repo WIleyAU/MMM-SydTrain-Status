@@ -397,7 +397,11 @@ module.exports = NodeHelper.create({
                                 };
                                 if ((moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) && (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") >= now)) {
                                     currStop = stops[i]["name"];
-                                    nxtStop = stops[i + 1]["name"];
+                                    var si=i;
+                                    while (!stops[si].arrivalTimePlanned && si<stops.length) {
+                                        si++;
+                                    }
+                                    nxtStop = stops[si]["name"];
                                     schImage = "TripSched_AtStop.png";
                                     schPos = "schPos3";
                                 };
