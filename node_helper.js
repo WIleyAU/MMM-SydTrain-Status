@@ -356,6 +356,9 @@ module.exports = NodeHelper.create({
                                         schImage = "SchedTrip_InTransit.png";
                                         var posCalc = 0;
                                         var ti = i+1;
+                                        while (!stops[ti].arrivalTimeEstimated && ti<stops.length) {
+                                            ti++;
+                                        };
                                         var prevTime = moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         var nxtTime = moment.utc(stops[ti]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm");
                                         posCalc = moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime));
@@ -363,7 +366,7 @@ module.exports = NodeHelper.create({
                                         console.log("MMM-SYDTRAIN-STATS posCalc now: " + moment(now).format());
                                         console.log("MMM-SYDTRAIN-STATS posCalc prevTime: " + moment(prevTime).format());
                                         console.log("MMM-SYDTRAIN-STATS posCalc nxtTime: " + moment(nxtTime).format());
-                                        console.log("MMM-SYDTRAIN-STATS posCalc nxtStop: " + stops[i+1]["arrivalTimeEstimated"]);
+                                        console.log("MMM-SYDTRAIN-STATS posCalc nxtStop: " + stops[ti]["arrivalTimeEstimated"]);
                                         console.log("MMM-SYDTRAIN-STATS posCalc stop[i]: " + i);
                                         console.log("MMM-SYDTRAIN-STATS posCalc stops: " + stops.length);
                                         console.log("MMM-SYDTRAIN_STATS posCalc prev: " + moment.duration(moment(now).diff(prevTime)));
@@ -406,6 +409,9 @@ module.exports = NodeHelper.create({
                         };
                     };
                 });
+
+
+
                 if (currStop == "") {
                     currStop = "IN-TRANSIT";
                 };
