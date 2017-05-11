@@ -374,21 +374,21 @@ module.exports = NodeHelper.create({
                                         console.log("MMM-SYDTRAIN-STATS posCalc diff: " + moment.duration(moment(now).diff(prevTime))/moment.duration(moment(nxtTime).diff(prevTime)));
                                         if (posCalc<0.1)  {
                                             schPos = "schPos1";
-                                        } else  if (posCalc<2) {
+                                        } else  if (posCalc<0.2) {
                                             schPos = "schPos2";
-                                        } else if (posCalc<3) {
+                                        } else if (posCalc<0.3) {
                                             schPos = "schPos3";
-                                        } else if (posCalc<4) {
+                                        } else if (posCalc<0.4) {
                                             schPos = "schPos4";
-                                        } else if (posCalc<5) {
+                                        } else if (posCalc<0.5) {
                                             schPos = "schPos5";
-                                        } else if (posCalc<6) {
+                                        } else if (posCalc<0.6) {
                                             schPos = "schPos6";
-                                        } else if (posCalc<7) {
+                                        } else if (posCalc<0.7) {
                                             schPos = "schPos7";
-                                        } else if (posCalc<8) {
+                                        } else if (posCalc<0.8) {
                                             schPos = "schPos8";
-                                        } else if (posCalc<9) {
+                                        } else if (posCalc<0.9) {
                                             schPos = "schPos9";
                                         } else {
                                             schPos = "schPos10";
