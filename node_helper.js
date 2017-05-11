@@ -426,12 +426,12 @@ module.exports = NodeHelper.create({
                                 "scTime": moment.utc(stops[i]["arrivalTimePlanned"]).local().format("DD-MM-YYYY HH:mm"),
                                 "rlTime": moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm")
                             });
-                            if (ji == legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) {
+                            if (li == legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) {
                                 currStop = stops[i]["name"];
                                 nxtStop = "ARRIVED";
                                 delay = moment(stops[i]["arrivalTimeEstimated"]).diff(moment(stops[i]["arrivalTimePlanned"]), "minutes");
                                 schImage = "SchedTrip_AtArr.png";
-                            } else if (ji < legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) { 
+                            } else if (li < legs.length-1 && moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") < now) { 
                                 prevStop = stops[i]["name"];
                                 schImage = "SchedTrip_InTransit.png";
                                 var posCalc = 0;
