@@ -387,7 +387,7 @@ module.exports = NodeHelper.create({
                                 };
                                 if ((moment.utc(stops[i]["arrivalTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") <= now) && (moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") >= now)) {
                                     currStop = stops[i]["name"];
-                                    var si=i;
+                                    var si=i+1;
                                     while (!stops[si].arrivalTimePlanned && si<stops.length) {
                                         si++;
                                     }
