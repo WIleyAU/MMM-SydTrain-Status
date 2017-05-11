@@ -67,14 +67,20 @@ module.exports = NodeHelper.create({
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent now: " + now.get("hour"));
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain-2: " + moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour"));
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain+3: " + moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"));
+        var mornHourBefore = moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour");
+        var mornHourAfter = moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour");
+        var eveHourBefore = moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour");
+        var eveHourAfter = moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour");
 
-        if ((now.get("hour") >= moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour"))) {
+        //if ((now.get("hour") >= moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour"))) {
+        if (now.get("hour") >= mornHourBefore && now.get("hour") <= mornHourAfter) {
             this.showMorn = true;
             this.showEve = false;
         } else {
             this.showMorn = false;
         };
-        if ((now.get("hour") >= moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"))) {
+        //if ((now.get("hour") >= moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour")) && (now.get("hour") <= moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour"))) {
+        if (now.get("hour") >= eveHourBefore && now.get("hour") <= eveHourAfter) {
             this.showEve = true;
             this.showMorn = false;
         } else {
