@@ -651,7 +651,9 @@ module.exports = NodeHelper.create({
     },
 
     gotStopID: function(resParams) {
-        if (resParams.id == "dep") {
+        if (resParams.stopID == "NOT A VALID STOP NAME") {
+            this.sendSocketNotification("SYDTRAIN_INVALID_STOPNAME",resParams);
+        } else if (resParams.id == "dep") {
             this.depStopID = resParams.stopID;
         } else {
             this.arrStopID = resParams.stopID;
@@ -712,7 +714,7 @@ module.exports = NodeHelper.create({
               
                 if (results.length != 1) {
                     var resParams = {
-                        "id": params.id,
+                        "id": direction,
                         "stopID": "NOT A VALID STOP NAME"
                     };
                 } else {
