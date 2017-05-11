@@ -403,7 +403,7 @@ module.exports = NodeHelper.create({
                                     }
                                     nxtStop = stops[si]["name"];
                                     schImage = "TripSched_AtStop.png";
-                                    schPos = "schPos3";
+                                    schPos = "schPos5";
                                 };
                                 if ((moment.utc(stops[i]["departureTimeEstimated"]).local().format("DD-MM-YYYY HH:mm") > now) && (nxtStop == "")) {
                                     nxtStop = stops[i]["name"];
