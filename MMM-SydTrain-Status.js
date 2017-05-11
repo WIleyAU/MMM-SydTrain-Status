@@ -265,8 +265,12 @@ Module.register('MMM-SydTrain-Status', {
             scheduleWrapper.appendChild(scheduleHeader);
 
             var schDelay = document.createElement("div");
-            schDelay.className = "small"
-            if (currLoc.del == 0) {
+            schDelay.className = "small";
+            if (currLoc.nxtStop == "ARRIVED") {
+                var delay = "ARRIVED";
+            } else if (currLoc.prevStop == "WAITING") {
+                var delay = "WAITING";
+            } else if (currLoc.del == 0) {
                 var delay = "ON TIME";
             } else {
                 if (currLoc.del < 0) {
@@ -290,13 +294,22 @@ Module.register('MMM-SydTrain-Status', {
 
             
             //Determine the position of icon display
-            var currLocIconWrapper = document.createElement("div");
-            currLocIconWrapper.id = currLoc.schPos;
-            var currLocImgIcon = document.createElement("img");
-            currLocImgIcon.src = this.file(vehicalIcon);
-            currLocIconWrapper.appendChild(currLocImgIcon);
-            currLocWrapper.appendChild(currLocIconWrapper);
-            
+            if (currLoc.nxtStop == "ARRIVED") {
+                var showVehicle = false;
+            } else if (currLoc.prevStop == "WAITING") {
+                var showVehicle = false;
+            } else {
+                var showVehicle = true;
+            };
+            if (showVehicle) {
+                var currLocIconWrapper = document.createElement("div");
+                currLocIconWrapper.id = currLoc.schPos;
+                var currLocImgIcon = document.createElement("img");
+                currLocImgIcon.src = this.file(vehicalIcon);
+                currLocIconWrapper.appendChild(currLocImgIcon);
+                currLocWrapper.appendChild(currLocIconWrapper);
+            };
+
             //Determine the station labels to apply
             var prevStopSplit = currLoc.prevStop.split(",");
             var currStopSplit = currLoc.currStop.split(",");
