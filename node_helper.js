@@ -64,11 +64,11 @@ module.exports = NodeHelper.create({
         console.log("MMM-SydTrain-Status initiating updateShowCurrent function...");
 
         //var now = new moment();
-        var now = new moment().get("hour");
-        var mornHourBefore = moment(theConfig.mornTrain, "HH:mm").add(-3, "hour").get("hour");
-        var mornHourAfter = moment(theConfig.mornTrain, "HH:mm").add(2, "hour").get("hour");
-        var eveHourBefore = moment(theConfig.eveTrain, "HH:mm").add(-2, "hour").get("hour");
-        var eveHourAfter = moment(theConfig.eveTrain, "HH:mm").add(3, "hour").get("hour");
+        var now = new moment();
+        var mornHourBefore = moment(theConfig.mornTrain, "HH:mm").add(-3, "hour");
+        var mornHourAfter = moment(theConfig.mornTrain, "HH:mm").add(2, "hour");
+        var eveHourBefore = moment(theConfig.eveTrain, "HH:mm").add(-2, "hour");
+        var eveHourAfter = moment(theConfig.eveTrain, "HH:mm").add(3, "hour");
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent now: " + now);
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain-2: " + eveHourBefore);
         console.log("MMM-SYDTRAIN-STATS updateShowCurrent eveTrain+3: " + eveHourAfter);
@@ -669,6 +669,7 @@ module.exports = NodeHelper.create({
         } else {
             this.arrStopID = resParams.stopID;
         };
+        console.log("MMM-SYDTRAIN-STATS depID: " + this.depStopID + " / arrID: " + this.arrStopID);
     },
 
     getStopID: function(theConfig, direction) {
@@ -733,7 +734,6 @@ module.exports = NodeHelper.create({
                         "id": direction,
                         "stopID": results[0]
                     };
-                    console.log("MMM-SYDTRAIN-STATS stopid = " + results[0]);
                 };
                 self.gotStopID(resParams);
             }

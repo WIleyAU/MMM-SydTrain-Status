@@ -19,8 +19,8 @@ Module.register('MMM-SydTrain-Status', {
         mornTrain: "08:45",
         eveTrain: "22:40",
         showIncidents: false,
-        refreshRateIncidents: 10*60*1000,
-        refreshRateDepBoard: 5*60*1000,
+        refreshRateIncidents: 5*60*1000,
+        refreshRateDepBoard: 1*60*1000,
         refreshRateCurrLoc: 20*1000,
         timeOffset: 120,  //minutes
         loadingText: "Loading SydTrain Status..."
