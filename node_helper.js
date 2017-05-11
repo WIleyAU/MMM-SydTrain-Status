@@ -89,7 +89,9 @@ module.exports = NodeHelper.create({
             }
         };
         console.log("MMM-SydTrain-Status updateShowCurrent this.showMorn = " + this.showMorn);
+        console.log("MMM-SydTrain-Status updateShowCurrent this.mornTrain = " + theConfig.mornTrain);
         console.log("MMM-SydTrain-Status updateShowCurrent this.showEve = " + this.showEve);
+        console.log("MMM-SydTrain-Status updateShowCurrent this.eveTrain = " + theConfig.eveTrain);
     },
 
     updateAutoSwitch: function(theConfig) {
